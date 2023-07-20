@@ -19,11 +19,11 @@ class WingLspServerSupportProvider : LspServerSupportProvider {
 }
 private class WingLspServerDescriptor(project: Project) : ProjectWideLspServerDescriptor(project, "Wing") {
     override fun isSupportedFile(file: VirtualFile) = file.extension == "w"
-    override fun createCommandLine() = GeneralCommandLine("wing", "lsp")
+    override fun createCommandLine() = WingCommandLine.CreateLsp(project)
 
-    override val lspCompletionSupport: LspCompletionSupport?
+    override val lspCompletionSupport: LspCompletionSupport
         get() = object : LspCompletionSupport() {
-            override fun getIcon(item: CompletionItem): Icon? {
+            override fun getIcon(item: CompletionItem): Icon {
                 return WingIcons.FILE
             }
         }
