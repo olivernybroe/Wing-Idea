@@ -19,6 +19,8 @@
                   fieldName="INSTANCE"
                   language="Wing"
                   extensions="w"/>
+        <fileEditorProvider implementation="WingPreviewEditorProvider"/>
+        <fileEditorProvider implementation="WingSplitEditorProvider"/>
     </extensions>
 
     <applicationListeners>
