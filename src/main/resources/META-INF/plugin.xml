@@ -5,11 +5,20 @@
     <vendor>olivernybroe</vendor>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.ultimate</depends>
+    <depends>org.jetbrains.plugins.textmate</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.olivernybroe.wingidea.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <platform.lsp.serverSupportProvider
+                implementation="com.github.olivernybroe.wingidea.WingLspServerSupportProvider"/>
+        <fileType name="Wing"
+                  implementationClass="com.github.olivernybroe.wingidea.WingFileType"
+                  fieldName="INSTANCE"
+                  language="Wing"
+                  extensions="w"/>
     </extensions>
 
     <applicationListeners>
