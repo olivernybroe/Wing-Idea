@@ -16,7 +16,7 @@
         <platform.lsp.serverSupportProvider
                 implementation="com.github.olivernybroe.wingidea.WingLspServerSupportProvider"/>
         <fileType name="Wing"
-                  implementationClass="com.github.olivernybroe.wingidea.WingFileType"
+                  implementationClass="com.github.olivernybroe.wingidea.lang.WingFileType"
                   fieldName="INSTANCE"
                   language="Wing"
                   extensions="w"/>

@@ -1,0 +1,42 @@
+{
+  parserClass='com.github.olivernybroe.wingidea.lang.parser.WingParser'
+  parserUtilClass='com.github.olivernybroe.wingidea.lang.parser.WingParserUtil'
+
+  implements='com.github.olivernybroe.wingidea.lang.psi.WingElement'
+  extends='com.github.olivernybroe.wingidea.lang.psi.impl.WingElementImpl'
+
+  elementTypeHolderClass='com.github.olivernybroe.wingidea.lang.psi.WingElementTypes'
+  elementTypeClass='com.github.olivernybroe.wingidea.lang.psi.WingElementType'
+  tokenTypeClass='com.github.olivernybroe.wingidea.lang.psi.WingTokenType'
+
+  psiClassPrefix='Wing'
+  psiImplClassSuffix='Impl'
+  psiPackage='com.github.olivernybroe.wingidea.lang.psi'
+  psiImplPackage='com.github.olivernybroe.wingidea.lang.psi.impl'
+
+  tokens = [
+
+    INFLIGHT_SPECIFIER = 'inflight'
+    STATIC = 'static'
+    REASSIGNABLE = 'var'
+    BOOL = 'regexp:true|false'
+    INTEGER = 'regexp:0|[1-9]\d*'
+    DECIMAL = 'regexp:0\.\d+|[1-9]\d*\.\d+'
+    BRING = 'bring'
+    ALIAS = 'as'
+    SEMICOLON = ';'
+    COMMENT = 'regexp://.*'
+    STRING_LITERAL  = 'regexp:\"([^\\\"\r\n]|\\[^\r\n])*\"?'
+    IDENTIFIER = 'regexp:[A-Za-z_$][A-Za-z_$0-9]*|[A-Z][A-Z0-9_]*'
+    WHITE_SPACE = 'regexp:\s+'
+  ]
+}
+
+Schema ::= Statement*
+
+Statement ::=
+    ImportStatement
+
+ImportStatement ::=
+    BRING IDENTIFIER SEMICOLON
+    | BRING STRING_LITERAL ALIAS IDENTIFIER SEMICOLON

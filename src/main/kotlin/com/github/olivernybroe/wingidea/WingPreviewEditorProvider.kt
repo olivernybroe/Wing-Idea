@@ -1,5 +1,6 @@
 package com.github.olivernybroe.wingidea
 
+import com.github.olivernybroe.wingidea.lang.WingFileType
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorPolicy
 import com.intellij.openapi.fileEditor.FileEditorProvider

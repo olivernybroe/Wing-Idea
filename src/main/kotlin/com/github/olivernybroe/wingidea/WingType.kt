@@ -1,5 +1,9 @@
 package com.github.olivernybroe.wingidea
 
+import com.intellij.execution.process.OSProcessHandler
+import com.intellij.execution.process.ProcessEvent
+import com.intellij.execution.process.ProcessListener
+import com.intellij.execution.processTools.getResultStdoutStr
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.remoteServer.ServerType
@@ -13,17 +17,17 @@ import com.intellij.remoteServer.runtime.ServerTaskExecutor
 import com.intellij.remoteServer.runtime.deployment.DeploymentLogManager
 import com.intellij.remoteServer.runtime.deployment.DeploymentTask
 import com.intellij.remoteServer.runtime.deployment.ServerRuntimeInstance
-import javax.swing.Icon
+import com.intellij.util.io.await
 import javax.swing.JComponent
 import javax.swing.JLabel
 
-class WingType: ServerType<WingConfiguration>("wing") {
+class WingType(val project: Project) : ServerType<WingConfiguration>("wing") {
     override fun getPresentableName() = "Wing"
 
     override fun getIcon() = WingIcons.FILE
 
     override fun createDefaultConfiguration(): WingConfiguration {
-        return WingConfiguration()
+        return WingConfiguration(project)
     }
 
     override fun createDeploymentConfigurator(project: Project): DeploymentConfigurator<*, WingConfiguration> {
@@ -33,24 +37,34 @@ class WingType: ServerType<WingConfiguration>("wing") {
     override fun createConnector(configuration: WingConfiguration, serverTaskExecutor: ServerTaskExecutor): ServerConnector<*> {
         return object : ServerConnector<WingDeploymentConfiguration>() {
             override fun connect(connectionCallback: ConnectionCallback<WingDeploymentConfiguration>) {
-                connectionCallback.connected(object : ServerRuntimeInstance<WingDeploymentConfiguration>() {
-                    override fun deploy(
-                        deploymentTask: DeploymentTask<WingDeploymentConfiguration>,
-                        deploymentLogManager: DeploymentLogManager,
-                        deploymentOperationCallback: DeploymentOperationCallback
-                    ) {
+                val command = WingCommandLine.CreateConsole(configuration.project)
 
-                    }
+                serverTaskExecutor.submit {
+                    val process = OSProcessHandler(command)
+                    process.addProcessListener(object : ProcessListener {
+                        override fun processTerminated(event: ProcessEvent) {
+                            connectionCallback.errorOccurred("Wing it stopped running with exit code ${event.exitCode}")
+                        }
+                    })
 
-                    override fun computeDeployments(p0: ComputeDeploymentsCallback) {
-                        TODO("Not yet implemented")
-                    }
+                    connectionCallback.connected(object : ServerRuntimeInstance<WingDeploymentConfiguration>() {
+                        override fun deploy(
+                            deploymentTask: DeploymentTask<WingDeploymentConfiguration>,
+                            deploymentLogManager: DeploymentLogManager,
+                            deploymentOperationCallback: DeploymentOperationCallback
+                        ) {
+                            TODO("Deployment not implemented yet")
+                        }
 
-                    override fun disconnect() {
-                        TODO("Not yet implemented")
-                    }
+                        override fun computeDeployments(callback: ComputeDeploymentsCallback) {
+                        }
 
-                })
+                        override fun disconnect() {
+                            process.destroyProcess()
+                        }
+
+                    })
+                }
             }
 
         }
@@ -88,6 +102,6 @@ class WingDeploymentConfigurator(project: Project): DeploymentConfigurator<WingD
 class WingDeploymentConfiguration: DeploymentConfigurationBase<WingDeploymentConfiguration>()
 
 
-class WingConfiguration: ServerConfigurationBase<WingConfiguration>() {
+class WingConfiguration(val project: Project) : ServerConfigurationBase<WingConfiguration>() {
 
 }

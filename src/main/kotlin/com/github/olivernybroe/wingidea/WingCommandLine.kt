@@ -23,7 +23,8 @@ class WingCommandLine(val project: Project, val command: String) {
             return GeneralCommandLine().apply {
                 withParentEnvironmentType(GeneralCommandLine.ParentEnvironmentType.CONSOLE)
                 withCharset(Charsets.UTF_8)
-                exePath = npmPath.replaceAfterLast("/", "npx").replaceAfterLast("\\", "npx.cmd")
+                withWorkDirectory(project.basePath)
+                withExePath(npmPath.replaceAfterLast("/", "npx").replaceAfterLast("\\", "npx.cmd"))
                 addParameter("wing")
                 addParameters(*commands)
             }

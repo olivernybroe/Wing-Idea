@@ -1,5 +1,6 @@
-package com.github.olivernybroe.wingidea
+package com.github.olivernybroe.wingidea.lang
 
+import com.github.olivernybroe.wingidea.WingIcons
 import com.intellij.openapi.fileTypes.LanguageFileType
 
 class WingFileType: LanguageFileType(WingLanguage()) {

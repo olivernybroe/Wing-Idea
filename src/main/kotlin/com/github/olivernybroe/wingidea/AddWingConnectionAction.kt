@@ -7,7 +7,7 @@ import com.intellij.remoteServer.configuration.RemoteServersManager
 class AddWingConnectionAction: DumbAwareAction() {
     override fun actionPerformed(event: AnActionEvent) {
         val manager = RemoteServersManager.getInstance()
-        val server = manager.createServer(WingType())
+        val server = manager.createServer(WingType(event.project!!))
         manager.addServer(server)
     }
 }
