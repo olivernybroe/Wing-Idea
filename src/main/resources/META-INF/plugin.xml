@@ -9,19 +9,20 @@
     <depends>org.jetbrains.plugins.textmate</depends>
     <depends>JavaScript</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
+    <resource-bundle>messages.WingBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.olivernybroe.wingidea.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
         <platform.lsp.serverSupportProvider
                 implementation="com.github.olivernybroe.wingidea.WingLspServerSupportProvider"/>
-        <fileType name="Wing"
+      <!--  <fileType name="Wing"
                   implementationClass="com.github.olivernybroe.wingidea.lang.WingFileType"
                   fieldName="INSTANCE"
                   language="Wing"
-                  extensions="w"/>
+                  extensions="w"/>-->
         <fileEditorProvider implementation="com.github.olivernybroe.wingidea.WingPreviewEditorProvider"/>
         <fileEditorProvider implementation="com.github.olivernybroe.wingidea.WingSplitEditorProvider"/>
+        <fileIconProvider implementation="com.github.olivernybroe.wingidea.WingFileIconProvider"/>
     </extensions>
 
     <applicationListeners>

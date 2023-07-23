@@ -12,7 +12,7 @@ import javax.swing.Icon
 
 class WingLspServerSupportProvider : LspServerSupportProvider {
     override fun fileOpened(project: Project, file: VirtualFile, serverStarter: LspServerStarter) {
-        if (file.extension == "w") {
+        if (file.isWingFile) {
             serverStarter.ensureServerStarted(WingLspServerDescriptor(project))
         }
     }

@@ -14,9 +14,11 @@ import java.beans.PropertyChangeListener
 import javax.swing.JComponent
 
 
+
+
 class WingPreviewEditorProvider: FileEditorProvider {
     override fun accept(project: Project, virtualFile: VirtualFile): Boolean {
-        return virtualFile.fileType is WingFileType
+        return virtualFile.isWingFile
     }
 
     override fun createEditor(project: Project, virtualFile: VirtualFile): FileEditor {

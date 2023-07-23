@@ -14,7 +14,7 @@ import com.intellij.openapi.vfs.VirtualFile
 
 class WingSplitEditorProvider: FileEditorProvider, DumbAware {
     override fun accept(project: Project, virtualFile: VirtualFile): Boolean {
-        return virtualFile.fileType is WingFileType
+        return virtualFile.isWingFile
     }
 
     override fun createEditor(project: Project, virtualFile: VirtualFile): FileEditor {

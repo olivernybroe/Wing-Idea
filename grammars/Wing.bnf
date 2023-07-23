@@ -22,21 +22,424 @@
     BOOL = 'regexp:true|false'
     INTEGER = 'regexp:0|[1-9]\d*'
     DECIMAL = 'regexp:0\.\d+|[1-9]\d*\.\d+'
+    NIL = 'nil'
     BRING = 'bring'
+    TEST = 'test'
+    ADDITION = '+'
+    SUBTRACTION = '-'
+    MULTIPLY = '*'
+    DIVIDE = '/'
+    MODULO = '%'
+    FLOOR_DIVIDE = '\'
+    POWER = '**'
+    AND = '&&'
+    OR = '||'
+    NOT = '!'
+    ASSIGNMENT = '='
+    EQUAL = '=='
+    NOT_EQUAL = '!='
+    LESS_THAN = '<'
+    LESS_THAN_OR_EQUAL = '<='
+    GREATER_THAN = '>'
+    GREATER_THAN_OR_EQUAL = '>='
+    UNWRAP_OR = '??'
     ALIAS = 'as'
+    NEW = 'new'
+    LET = 'let'
+    VAR = 'var'
+    FOR = 'for'
+    IN = 'in'
+    IF = 'if'
+    ELSE = 'else'
+    ELIF = 'elif'
+    WHILE = 'while'
+    CLASS = 'class'
+    ENUM = 'enum'
+    EXTENDS = 'extends'
+    IMPLEMENTS = 'impl'
+    INTERFACE = 'interface'
+    ASYNC = 'async'
+    STRUCT = 'struct'
+    TRY = 'try'
+    CATCH = 'catch'
+    FINALLY = 'finally'
+    LEFT_BRACE = '{'
+    RIGHT_BRACE = '}'
+    BREAK = 'break'
+    CONTINUE = 'continue'
+    RETURN = 'return'
     SEMICOLON = ';'
+    COLON = ':'
+    ARROW = '=>'
+    SUPER = 'super'
+    QUESTION_MARK = '?'
     COMMENT = 'regexp://.*'
+    MULTI_LINE_COMMENT = 'regexp:/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/'
     STRING_LITERAL  = 'regexp:\"([^\\\"\r\n]|\\[^\r\n])*\"?'
     IDENTIFIER = 'regexp:[A-Za-z_$][A-Za-z_$0-9]*|[A-Z][A-Z0-9_]*'
     WHITE_SPACE = 'regexp:\s+'
   ]
+  extends(".*Expression")=Expression
+
 }
 
 Schema ::= Statement*
 
 Statement ::=
     ImportStatement
+    | TestStatement
+    | ExpressionStatement
+    | ForInLoopStatement
+    | IfStatement
+    | BreakStatement
+    | ContinueStatement
+    | WhileStatement
+    | ClassDefinitionStatement
+    | VariableAssignmentStatement
+    | VariableDefinitionStatement
+    | ResourceDefinitionStatement
+    | ReturnStatement
+    | InterfaceDefinitionStatement
+    | StructDefinitionStatement
+    | EnumDefinitionStatement
+    | IfLetStatement
+    | TryCatchStatement
+    | SuperConstructorStatement
 
 ImportStatement ::=
     BRING IDENTIFIER SEMICOLON
-    | BRING STRING_LITERAL ALIAS IDENTIFIER SEMICOLON
+    | BRING String ALIAS IDENTIFIER SEMICOLON
+
+TestStatement ::=
+    TEST String BlockStatement
+
+BlockStatement ::=
+    LEFT_BRACE Statement* RIGHT_BRACE
+
+ExpressionStatement ::=
+    Expression SEMICOLON
+
+Expression ::=
+    BinaryExpression
+    | CallExpression
+    | UnaryExpression
+    | JsonLiteralExpression
+    | StructLiteralExpression
+    | PreflightClosureExpression
+    | LiteralExpression
+    | ReferenceExpression
+    | InflightClosureExpression
+    | CollectionLiteralExpression
+    | NewExpression
+    | AwaitExpression
+    | DeferExpression
+    | ParenthesizedExpression
+    | OptionalTestExpression
+
+MathematicalOperators ::=
+    ADDITION
+    | SUBTRACTION
+    | MULTIPLY
+    | DIVIDE
+    | MODULO
+    | FLOOR_DIVIDE
+    | POWER
+
+LogicalOperators ::=
+    AND
+    | OR
+    | NOT
+
+RelationalOperators ::=
+    EQUAL
+    | NOT_EQUAL
+    | LESS_THAN
+    | LESS_THAN_OR_EQUAL
+    | GREATER_THAN
+    | GREATER_THAN_OR_EQUAL
+
+Operators ::=
+    MathematicalOperators
+    | LogicalOperators
+    | RelationalOperators
+    | UNWRAP_OR
+
+BinaryExpression ::=
+    Expression Operators Expression
+
+
+UnaryOperators ::=
+    NOT
+    | SUBTRACTION
+
+UnaryExpression ::=
+    UnaryOperators Expression
+
+
+VariableDefinitionStatement ::=
+    LET VAR? IDENTIFIER TypeAnnotation? ASSIGNMENT Expression SEMICOLON
+
+Type ::=
+    OptionalType
+    | FieldType
+
+FieldType ::=
+    BuiltInType
+    | BuiltInContainerType
+    | FunctionType
+    | CustomType
+    | JsonContainerType
+
+
+BuiltInType ::=
+    "bool"
+    | "num"
+    | "any"
+    | "str"
+    | "void"
+    | "duration"
+
+OptionalType ::=
+    FieldType QUESTION_MARK
+
+CustomType ::=
+    IDENTIFIER ("." IDENTIFIER)*
+
+JsonContainerType ::=
+    "Json"
+    | "MutJson"
+
+BuiltInContainerType ::=
+    ImmutableContainerType
+    | MutableContainerType
+
+ImmutableContainerType ::=
+    "Array" ContainerValueType
+    | "Set" ContainerValueType
+    | "Map" ContainerValueType
+    | "Promise" ContainerValueType
+
+MutableContainerType ::=
+    "MutSet" ContainerValueType
+    | "MutMap" ContainerValueType
+    | "MutArray" ContainerValueType
+
+ContainerValueType ::=
+    "<" Type ">"
+
+TypeAnnotation ::=
+    COLON Type
+
+ FunctionType ::=
+    INFLIGHT_SPECIFIER? ParameterTypeList [COLON Type]
+
+ ParameterTypeList ::=
+    "(" [Type (',' Type)*] ")"
+
+ LiteralExpression ::=
+    String
+    | BOOL
+    | Duration
+    | Number
+    | NIL
+
+Number ::=
+    INTEGER
+    | DECIMAL
+
+Duration ::=
+    Number "ms"
+    | Number "s"
+    | Number "m"
+    | Number "h"
+    | Number "d"
+    | Number "mo"
+    | Number "y"
+
+ForInLoopStatement ::=
+    FOR IDENTIFIER IN Expression BlockStatement
+    | FOR IDENTIFIER IN LoopRange BlockStatement
+
+LoopRange ::=
+    Expression '..' '='? Expression
+
+IfStatement ::=
+    IF Expression BlockStatement ElIfBlock* (ELSE BlockStatement)?
+
+ElIfBlock ::=
+    ELIF Expression BlockStatement
+
+BreakStatement ::=
+    BREAK SEMICOLON
+
+ContinueStatement ::=
+    CONTINUE SEMICOLON
+
+WhileStatement ::=
+    WHILE Expression BlockStatement
+
+ClassDefinitionStatement ::=
+    INFLIGHT_SPECIFIER CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (',' CustomType)*)? ClassImplementation
+
+ClassImplementation ::=
+    '{' (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* '}'
+
+Initializer ::=
+    INFLIGHT_SPECIFIER? 'INIT' ParameterList BlockStatement
+
+ParameterList ::=
+    '(' [ParameterDefinition (',' ParameterDefinition)*] ')'
+
+ParameterDefinition ::=
+    VAR? IDENTIFIER TypeAnnotation
+
+MethodDefinition ::=
+    ExternModifier? AccessModifier? static? 'async'? IDENTIFIER ParameterList TypeAnnotation? (BlockStatement | SEMICOLON)
+
+InflightMethodDefinition ::=
+    ExternModifier? AccessModifier? static? INFLIGHT_SPECIFIER IDENTIFIER ParameterList TypeAnnotation? (BlockStatement | SEMICOLON)
+
+ExternModifier ::=
+    'extern' String
+
+ClassField ::=
+    AccessModifier? 'static'? INFLIGHT_SPECIFIER? VAR? IDENTIFIER TypeAnnotation (ASSIGNMENT Expression)? SEMICOLON
+
+AccessModifier ::=
+    'public'
+    | 'private'
+    | 'protected'
+
+VariableAssignmentStatement ::=
+    ReferenceExpression ASSIGNMENT Expression SEMICOLON
+
+ReferenceExpression ::=
+    IDENTIFIER (Accessor IDENTIFIER)*
+    | IDENTIFIER
+    // TODO: Fix left-recursion | StructuredAccessExpression
+
+StructuredAccessExpression ::=
+    Expression '[' Expression ']'
+
+Accessor ::=
+    '.'
+    | '?.'
+
+ResourceDefinitionStatement ::=
+    CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (',' CustomType)*)?  ResourceImplementation
+
+ResourceImplementation ::=
+    '{' (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* '}'
+
+ReturnStatement ::=
+    RETURN Expression SEMICOLON
+
+InterfaceDefinitionStatement ::=
+    INTERFACE IDENTIFIER (EXTENDS CustomType (',' CustomType)*)? InterfaceImplementation
+
+InterfaceImplementation ::=
+    '{' (MethodSignature | InflightMethodSignature | ClassField )* '}'
+
+MethodSignature ::=
+    ASYNC? IDENTIFIER ParameterList TypeAnnotation SEMICOLON
+
+InflightMethodSignature ::=
+    INFLIGHT_SPECIFIER IDENTIFIER ParameterList TypeAnnotation SEMICOLON
+
+StructDefinitionStatement ::=
+    STRUCT IDENTIFIER (EXTENDS CustomType (',' CustomType)*)? StructImplementation
+
+StructImplementation ::=
+    '{' StructField* '}'
+
+StructField ::=
+    IDENTIFIER TypeAnnotation SEMICOLON
+
+StructLiteralExpression ::=
+    CustomType '{' StructLiteralMember* (',' StructLiteralMember)* '}'
+
+StructLiteralMember ::=
+    IDENTIFIER COLON Expression
+
+PreflightClosureExpression ::=
+    ParameterList TypeAnnotation? ARROW BlockStatement
+
+InflightClosureExpression ::=
+    INFLIGHT_SPECIFIER ParameterList TypeAnnotation? ARROW BlockStatement
+
+CallExpression ::=
+    (CustomType | 'super' '.' IDENTIFIER) ArgumentList
+    // TODO: fix left-recursion (Expression | 'super' '.' IDENTIFIER) ArgumentList
+
+ArgumentList ::=
+    '(' (Argument (',' Argument)*)? ')'
+
+Argument ::=
+    Expression
+    | IDENTIFIER COLON Expression
+
+CollectionLiteralExpression ::=
+    ArrayLiteralExpression
+    | SetLiteralExpression
+    | MapLiteralExpression
+
+ArrayLiteralExpression ::=
+    BuiltInContainerType? '[' (Expression (',' Expression)*)? ']'
+
+SetLiteralExpression ::=
+    BuiltInContainerType? '{'( Expression (',' Expression)*)? '}'
+
+MapLiteralExpression ::=
+    BuiltInContainerType? '{' MapLiteralMember (',' MapLiteralMember)* '}'
+
+MapLiteralMember ::=
+    String '=>' Expression
+
+NewExpression ::=
+    NEW (CustomType | MutableContainerType) ArgumentList Expression? Expression?
+
+JsonLiteralExpression ::=
+    JsonContainerType Expression
+    | JsonMapLiteral
+
+JsonMapLiteral ::=
+    '{' (JsonMapLiteralMember (',' JsonMapLiteralMember)*)? '}'
+
+JsonMapLiteralMember ::=
+    (String | IDENTIFIER) ':' Expression
+
+AwaitExpression ::=
+    'await' Expression
+
+DeferExpression ::=
+    'defer' Expression
+
+ParenthesizedExpression ::=
+    '(' Expression ')'
+
+OptionalTestExpression ::=
+    Expression '?'
+
+EnumDefinitionStatement ::=
+    ENUM IDENTIFIER '{' (EnumField (',' EnumField)* ','?)? '}'
+
+EnumField ::=
+    IDENTIFIER
+
+IfLetStatement ::=
+    IF LET IDENTIFIER ASSIGNMENT Expression BlockStatement ElIfBlock* (ELSE BlockStatement)?
+
+TryCatchStatement ::=
+    TRY BlockStatement CatchBlock? FinallyBlock?
+
+CatchBlock ::=
+    CATCH IDENTIFIER? BlockStatement
+
+FinallyBlock ::=
+    FINALLY BlockStatement
+
+SuperConstructorStatement ::=
+    SUPER ArgumentList SEMICOLON
+
+// TODO: Missing support for template substitution
+String ::= STRING_LITERAL

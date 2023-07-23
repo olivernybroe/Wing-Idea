@@ -11,7 +11,7 @@ internal class MyApplicationActivationListener : ApplicationActivationListener {
     override fun applicationActivated(ideFrame: IdeFrame) {
         thisLogger().warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.")
 
-        TextMateUserBundlesSettings.instance!!.addBundle("/Users/oliver.nybroe/Code/github/winglang/wing/apps/vscode-wing", "Wing")
-        TextMateService.getInstance().reloadEnabledBundles()
+        TextMateUserBundlesSettings.instance!!.addBundle("C:\\Users\\olive\\IdeaProjects\\Wing-Idea\\gen\\vscode-wing", "Wing")
+        // TextMateService.getInstance().reloadEnabledBundles()
     }
 }
