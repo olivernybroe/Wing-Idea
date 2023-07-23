@@ -13,5 +13,7 @@ internal class MyApplicationActivationListener : ApplicationActivationListener {
 
         TextMateUserBundlesSettings.instance!!.addBundle("C:\\Users\\olive\\IdeaProjects\\Wing-Idea\\gen\\vscode-wing", "Wing")
         // TextMateService.getInstance().reloadEnabledBundles()
+
+        //WingCommandLine.CreateConsole(project).toProcessBuilder().start()
     }
 }

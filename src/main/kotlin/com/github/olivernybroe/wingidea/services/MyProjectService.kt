@@ -11,8 +11,6 @@ class MyProjectService(project: Project) {
     init {
         thisLogger().info(WingBundle.message("projectService", project.name))
         thisLogger().warn("Don't forget to remove all non-needed sample code files with their corresponding registration entries in `plugin.xml`.")
-
-        //WingCommandLine.CreateConsole(project).toProcessBuilder().start()
     }
 
     fun getRandomNumber() = (1..100).random()
