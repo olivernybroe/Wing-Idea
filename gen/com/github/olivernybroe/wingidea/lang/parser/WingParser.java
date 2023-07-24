@@ -73,21 +73,21 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // Expression
-  //     | IDENTIFIER COLON Expression
+  // IDENTIFIER COLON Expression
+  //     | Expression
   public static boolean Argument(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Argument")) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ARGUMENT, "<argument>");
-    r = Expression(b, l + 1, -1);
-    if (!r) r = Argument_1(b, l + 1);
+    r = Argument_0(b, l + 1);
+    if (!r) r = Expression(b, l + 1, -1);
     exit_section_(b, l, m, r, false, null);
     return r;
   }
 
   // IDENTIFIER COLON Expression
-  private static boolean Argument_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "Argument_1")) return false;
+  private static boolean Argument_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "Argument_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeTokens(b, 0, IDENTIFIER, COLON);

@@ -397,8 +397,8 @@ ArgumentList ::=
     LEFT_PARENTHESIS (Argument (COMMA Argument)*)? RIGHT_PARENTHESIS
 
 Argument ::=
-    Expression
-    | IDENTIFIER COLON Expression
+    IDENTIFIER COLON Expression
+    | Expression
 
 CollectionLiteralExpression ::=
     ArrayLiteralExpression

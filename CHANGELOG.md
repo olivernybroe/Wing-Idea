@@ -3,5 +3,14 @@
 # Wing-Idea Changelog
 
 ## [Unreleased]
+
+### Fixed
+- Fixed argument with argument name not being parsed correctly
+
+## [0.0.1] - 2023-07-25
+
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
+
+[Unreleased]: https://github.com/olivernybroe/Wing-Idea/compare/v0.0.1...HEAD
+[0.0.1]: https://github.com/olivernybroe/Wing-Idea/commits/v0.0.1
