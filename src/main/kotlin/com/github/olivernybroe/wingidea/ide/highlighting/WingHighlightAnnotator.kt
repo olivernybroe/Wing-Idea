@@ -8,7 +8,6 @@ import com.github.olivernybroe.wingidea.lang.psi.*
 import com.github.olivernybroe.wingidea.lang.psi.WingElementTypes.*
 import com.intellij.codeInspection.util.InspectionMessage
 import com.intellij.lang.annotation.HighlightSeverity
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.editor.colors.TextAttributesKey
 
 class WingHighlightAnnotator : Annotator {

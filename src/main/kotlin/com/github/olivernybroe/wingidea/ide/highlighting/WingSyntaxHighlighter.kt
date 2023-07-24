@@ -7,9 +7,9 @@ import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import com.github.olivernybroe.wingidea.lang.psi.WingElementTypes
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 
 class WingSyntaxHighlighter: SyntaxHighlighterBase() {
+
     override fun getHighlightingLexer(): Lexer = WingLexer()
 
     override fun getTokenHighlights(tokenType: IElementType?): Array<TextAttributesKey> =

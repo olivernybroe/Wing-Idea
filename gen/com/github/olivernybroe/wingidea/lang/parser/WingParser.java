@@ -735,14 +735,15 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // 'extern' String
+  // EXTERN String
   public static boolean ExternModifier(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ExternModifier")) return false;
+    if (!nextTokenIs(b, EXTERN)) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, EXTERN_MODIFIER, "<extern modifier>");
-    r = consumeToken(b, "extern");
+    Marker m = enter_section_(b);
+    r = consumeToken(b, EXTERN);
     r = r && String(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, EXTERN_MODIFIER, r);
     return r;
   }
 
@@ -1113,13 +1114,14 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // INFLIGHT_SPECIFIER? 'INIT' ParameterList BlockStatement
+  // INFLIGHT_SPECIFIER? INIT ParameterList BlockStatement
   public static boolean Initializer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Initializer")) return false;
+    if (!nextTokenIs(b, "<initializer>", INFLIGHT_SPECIFIER, INIT)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, INITIALIZER, "<initializer>");
     r = Initializer_0(b, l + 1);
-    r = r && consumeToken(b, "INIT");
+    r = r && consumeToken(b, INIT);
     r = r && ParameterList(b, l + 1);
     r = r && BlockStatement(b, l + 1);
     exit_section_(b, l, m, r, false, null);

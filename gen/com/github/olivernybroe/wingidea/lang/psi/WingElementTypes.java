@@ -117,6 +117,7 @@ public interface WingElementTypes {
   IElementType ENUM = new WingTokenType("enum");
   IElementType EQUAL = new WingTokenType("==");
   IElementType EXTENDS = new WingTokenType("extends");
+  IElementType EXTERN = new WingTokenType("extern");
   IElementType FINALLY = new WingTokenType("finally");
   IElementType FLOOR_DIVIDE = new WingTokenType("\\");
   IElementType FOR = new WingTokenType("for");
@@ -127,6 +128,7 @@ public interface WingElementTypes {
   IElementType IMPLEMENTS = new WingTokenType("impl");
   IElementType IN = new WingTokenType("in");
   IElementType INFLIGHT_SPECIFIER = new WingTokenType("inflight");
+  IElementType INIT = new WingTokenType("init");
   IElementType INTEGER = new WingTokenType("INTEGER");
   IElementType INTERFACE = new WingTokenType("interface");
   IElementType LEFT_CURLY_BRACE = new WingTokenType("{");

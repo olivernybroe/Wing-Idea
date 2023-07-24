@@ -78,6 +78,8 @@
     SUPER = 'super'
     QUESTION_MARK = '?'
     COMMENT = 'regexp://.*'
+    INIT = 'init'
+    EXTERN = 'extern'
     AWAIT = 'await'
     DEFER = 'defer'
     MULTI_LINE_COMMENT = 'regexp:/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/'
@@ -295,7 +297,7 @@ ClassImplementation ::=
     LEFT_CURLY_BRACE (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* RIGHT_CURLY_BRACE
 
 Initializer ::=
-    INFLIGHT_SPECIFIER? 'INIT' ParameterList BlockStatement
+    INFLIGHT_SPECIFIER? INIT ParameterList BlockStatement
 
 ParameterList ::=
     LEFT_PARENTHESIS [ParameterDefinition (COMMA ParameterDefinition)*] RIGHT_PARENTHESIS
@@ -310,7 +312,7 @@ InflightMethodDefinition ::=
     ExternModifier? AccessModifier? static? INFLIGHT_SPECIFIER IDENTIFIER ParameterList TypeAnnotation? (BlockStatement | SEMICOLON)
 
 ExternModifier ::=
-    'extern' String
+    EXTERN String
 
 ClassField ::=
     AccessModifier? 'static'? INFLIGHT_SPECIFIER? VAR? IDENTIFIER TypeAnnotation (ASSIGNMENT Expression)? SEMICOLON
