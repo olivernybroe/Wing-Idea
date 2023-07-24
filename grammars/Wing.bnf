@@ -121,19 +121,23 @@ ExpressionStatement ::=
 
 Expression ::=
     BinaryExpression
-    | CallExpression
     | UnaryExpression
+    | NewExpression
     | JsonLiteralExpression
-    | StructLiteralExpression
-    | PreflightClosureExpression
     | LiteralExpression
     | ReferenceExpression
+    | NestedIdentifierExpression
+    | NestedIdentifierJsonExpression
+    | CallExpression
+    | StructuredAccessExpression
+    | SuperCallExpression
+    | PreflightClosureExpression
     | InflightClosureExpression
-    | CollectionLiteralExpression
-    | NewExpression
     | AwaitExpression
     | DeferExpression
+    | CollectionLiteralExpression
     | ParenthesizedExpression
+    | StructLiteralExpression
     | OptionalTestExpression
 
 MathematicalOperators ::=
@@ -312,11 +316,19 @@ AccessModifier ::=
 
 VariableAssignmentStatement ::=
     ReferenceExpression ASSIGNMENT Expression SEMICOLON
+    | StructuredAccessExpression ASSIGNMENT Expression SEMICOLON
+    | NestedIdentifierExpression ASSIGNMENT Expression SEMICOLON
+    | NestedIdentifierJsonExpression ASSIGNMENT Expression SEMICOLON
 
 ReferenceExpression ::=
     IDENTIFIER (Accessor IDENTIFIER)*
     | IDENTIFIER
-    // TODO: Fix left-recursion | StructuredAccessExpression
+
+NestedIdentifierExpression ::=
+    Expression Accessor IDENTIFIER?
+
+NestedIdentifierJsonExpression ::=
+    JsonContainerType Accessor IDENTIFIER?
 
 StructuredAccessExpression ::=
     Expression '[' Expression ']'
@@ -368,8 +380,10 @@ InflightClosureExpression ::=
     INFLIGHT_SPECIFIER ParameterList TypeAnnotation? ARROW BlockStatement
 
 CallExpression ::=
-    (CustomType | 'super' '.' IDENTIFIER) ArgumentList
-    // TODO: fix left-recursion (Expression | 'super' '.' IDENTIFIER) ArgumentList
+    Expression ArgumentList
+
+SuperCallExpression ::=
+    'super' '.' IDENTIFIER ArgumentList
 
 ArgumentList ::=
     '(' (Argument (',' Argument)*)? ')'
