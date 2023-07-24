@@ -28,8 +28,116 @@ public class WingBlockStatementImpl extends WingElementImpl implements WingBlock
 
   @Override
   @NotNull
-  public List<WingStatement> getStatementList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingStatement.class);
+  public List<WingBreakStatement> getBreakStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingBreakStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingClassDefinitionStatement> getClassDefinitionStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingClassDefinitionStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingContinueStatement> getContinueStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingContinueStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingEnumDefinitionStatement> getEnumDefinitionStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingEnumDefinitionStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingExpressionStatement> getExpressionStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingExpressionStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingForInLoopStatement> getForInLoopStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingForInLoopStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingIfLetStatement> getIfLetStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingIfLetStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingIfStatement> getIfStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingIfStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingImportStatement> getImportStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingImportStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingInterfaceDefinitionStatement> getInterfaceDefinitionStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingInterfaceDefinitionStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingResourceDefinitionStatement> getResourceDefinitionStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingResourceDefinitionStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingReturnStatement> getReturnStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingReturnStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingStructDefinitionStatement> getStructDefinitionStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingStructDefinitionStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingSuperConstructorStatement> getSuperConstructorStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingSuperConstructorStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingTestStatement> getTestStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingTestStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingTryCatchStatement> getTryCatchStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingTryCatchStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingVariableAssignmentStatement> getVariableAssignmentStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingVariableAssignmentStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingVariableDefinitionStatement> getVariableDefinitionStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingVariableDefinitionStatement.class);
+  }
+
+  @Override
+  @NotNull
+  public List<WingWhileStatement> getWhileStatementList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingWhileStatement.class);
   }
 
 }

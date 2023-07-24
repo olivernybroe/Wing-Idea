@@ -11,12 +11,9 @@ public interface WingNewExpression extends WingExpression {
   WingArgumentList getArgumentList();
 
   @Nullable
-  WingCustomType getCustomType();
+  WingContainerValueType getContainerValueType();
 
   @NotNull
   List<WingExpression> getExpressionList();
-
-  @Nullable
-  WingMutableContainerType getMutableContainerType();
 
 }

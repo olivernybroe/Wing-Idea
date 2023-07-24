@@ -29,12 +29,6 @@ public class WingStructLiteralExpressionImpl extends WingExpressionImpl implemen
 
   @Override
   @NotNull
-  public WingCustomType getCustomType() {
-    return findNotNullChildByClass(WingCustomType.class);
-  }
-
-  @Override
-  @NotNull
   public List<WingStructLiteralMember> getStructLiteralMemberList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, WingStructLiteralMember.class);
   }

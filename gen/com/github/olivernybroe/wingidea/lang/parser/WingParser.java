@@ -251,13 +251,11 @@ public class WingParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // ImmutableContainerType
   //     | MutableContainerType
-  public static boolean BuiltInContainerType(PsiBuilder b, int l) {
+  static boolean BuiltInContainerType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BuiltInContainerType")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, BUILT_IN_CONTAINER_TYPE, "<built in container type>");
     r = ImmutableContainerType(b, l + 1);
     if (!r) r = MutableContainerType(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -268,17 +266,15 @@ public class WingParser implements PsiParser, LightPsiParser {
   //     | "str"
   //     | "void"
   //     | "duration"
-  public static boolean BuiltInType(PsiBuilder b, int l) {
+  static boolean BuiltInType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "BuiltInType")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, BUILT_IN_TYPE, "<built in type>");
     r = consumeToken(b, "bool");
     if (!r) r = consumeToken(b, "num");
     if (!r) r = consumeToken(b, "any");
     if (!r) r = consumeToken(b, "str");
     if (!r) r = consumeToken(b, "void");
     if (!r) r = consumeToken(b, "duration");
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -505,14 +501,14 @@ public class WingParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // IDENTIFIER (DOT IDENTIFIER)*
-  public static boolean CustomType(PsiBuilder b, int l) {
+  static boolean CustomType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "CustomType")) return false;
     if (!nextTokenIs(b, IDENTIFIER)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = consumeToken(b, IDENTIFIER);
     r = r && CustomType_1(b, l + 1);
-    exit_section_(b, m, CUSTOM_TYPE, r);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -751,21 +747,32 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BuiltInType
+  // BuiltInType nb
   //     | BuiltInContainerType
   //     | FunctionType
   //     | CustomType
   //     | JsonContainerType
-  public static boolean FieldType(PsiBuilder b, int l) {
+  static boolean FieldType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "FieldType")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, FIELD_TYPE, "<field type>");
-    r = BuiltInType(b, l + 1);
+    Marker m = enter_section_(b);
+    r = FieldType_0(b, l + 1);
     if (!r) r = BuiltInContainerType(b, l + 1);
     if (!r) r = FunctionType(b, l + 1);
     if (!r) r = CustomType(b, l + 1);
     if (!r) r = JsonContainerType(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // BuiltInType nb
+  private static boolean FieldType_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "FieldType_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = BuiltInType(b, l + 1);
+    r = r && consumeToken(b, NB);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -954,15 +961,15 @@ public class WingParser implements PsiParser, LightPsiParser {
   //     | "Set" ContainerValueType
   //     | "Map" ContainerValueType
   //     | "Promise" ContainerValueType
-  public static boolean ImmutableContainerType(PsiBuilder b, int l) {
+  static boolean ImmutableContainerType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ImmutableContainerType")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, IMMUTABLE_CONTAINER_TYPE, "<immutable container type>");
+    Marker m = enter_section_(b);
     r = ImmutableContainerType_0(b, l + 1);
     if (!r) r = ImmutableContainerType_1(b, l + 1);
     if (!r) r = ImmutableContainerType_2(b, l + 1);
     if (!r) r = ImmutableContainerType_3(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1219,13 +1226,11 @@ public class WingParser implements PsiParser, LightPsiParser {
   /* ********************************************************** */
   // "Json"
   //     | "MutJson"
-  public static boolean JsonContainerType(PsiBuilder b, int l) {
+  static boolean JsonContainerType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "JsonContainerType")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, JSON_CONTAINER_TYPE, "<json container type>");
     r = consumeToken(b, "Json");
     if (!r) r = consumeToken(b, "MutJson");
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -1512,14 +1517,14 @@ public class WingParser implements PsiParser, LightPsiParser {
   // "MutSet" ContainerValueType
   //     | "MutMap" ContainerValueType
   //     | "MutArray" ContainerValueType
-  public static boolean MutableContainerType(PsiBuilder b, int l) {
+  static boolean MutableContainerType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MutableContainerType")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, MUTABLE_CONTAINER_TYPE, "<mutable container type>");
+    Marker m = enter_section_(b);
     r = MutableContainerType_0(b, l + 1);
     if (!r) r = MutableContainerType_1(b, l + 1);
     if (!r) r = MutableContainerType_2(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1589,13 +1594,13 @@ public class WingParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // FieldType QUESTION_MARK
-  public static boolean OptionalType(PsiBuilder b, int l) {
+  static boolean OptionalType(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "OptionalType")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, OPTIONAL_TYPE, "<optional type>");
+    Marker m = enter_section_(b);
     r = FieldType(b, l + 1);
     r = r && consumeToken(b, QUESTION_MARK);
-    exit_section_(b, l, m, r, false, null);
+    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -1966,10 +1971,9 @@ public class WingParser implements PsiParser, LightPsiParser {
   //     | IfLetStatement
   //     | TryCatchStatement
   //     | SuperConstructorStatement
-  public static boolean Statement(PsiBuilder b, int l) {
+  static boolean Statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Statement")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, STATEMENT, "<statement>");
     r = ImportStatement(b, l + 1);
     if (!r) r = TestStatement(b, l + 1);
     if (!r) r = ExpressionStatement(b, l + 1);
@@ -1989,7 +1993,6 @@ public class WingParser implements PsiParser, LightPsiParser {
     if (!r) r = IfLetStatement(b, l + 1);
     if (!r) r = TryCatchStatement(b, l + 1);
     if (!r) r = SuperConstructorStatement(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
     return r;
   }
 
@@ -2460,7 +2463,7 @@ public class WingParser implements PsiParser, LightPsiParser {
   public static boolean JsonLiteralExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "JsonLiteralExpression")) return false;
     boolean r;
-    Marker m = enter_section_(b, l, _NONE_, JSON_LITERAL_EXPRESSION, "<json literal expression>");
+    Marker m = enter_section_(b, l, _COLLAPSE_, JSON_LITERAL_EXPRESSION, "<json literal expression>");
     r = JsonLiteralExpression_0(b, l + 1);
     if (!r) r = JsonMapLiteral(b, l + 1);
     exit_section_(b, l, m, r, false, null);

@@ -34,12 +34,6 @@ public class WingNestedIdentifierJsonExpressionImpl extends WingExpressionImpl i
   }
 
   @Override
-  @NotNull
-  public WingJsonContainerType getJsonContainerType() {
-    return findNotNullChildByClass(WingJsonContainerType.class);
-  }
-
-  @Override
   @Nullable
   public PsiElement getIdentifier() {
     return findChildByType(IDENTIFIER);

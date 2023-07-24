@@ -35,12 +35,6 @@ public class WingJsonLiteralExpressionImpl extends WingExpressionImpl implements
 
   @Override
   @Nullable
-  public WingJsonContainerType getJsonContainerType() {
-    return findChildByClass(WingJsonContainerType.class);
-  }
-
-  @Override
-  @Nullable
   public WingJsonMapLiteral getJsonMapLiteral() {
     return findChildByClass(WingJsonMapLiteral.class);
   }

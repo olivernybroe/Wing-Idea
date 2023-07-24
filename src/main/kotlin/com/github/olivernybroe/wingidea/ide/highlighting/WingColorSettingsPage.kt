@@ -41,6 +41,10 @@ class WingColorSettingsPage: ColorSettingsPage {
                 WingBundle.messagePointer("options.language.defaults.string"),
                 WingColors.STRING_LITERAL
             ),
+            AttributesDescriptor(
+                WingBundle.messagePointer("options.language.defaults.class.method_definition"),
+                WingColors.METHOD_DEFINITION
+            ),
 
         )
 
@@ -60,6 +64,25 @@ class WingColorSettingsPage: ColorSettingsPage {
           bucket.put("wing-${'$'}{index}.txt", "Hello, ${'$'}{message}");
           log("file wing-${'$'}{index}.txt created");
         });
+        
+        inflight class Name extends Base impl IMyInterface1, IMyInterface2 {
+          // class fields
+          _field1: num;
+          _field2: str;
+          
+          init() {
+            // constructor implementation
+            // order is up to user
+            this._field1 = 1;
+            this._field2 = "sample";
+          }
+
+          // static method (access with Name.staticMethod(...))
+          static staticMethod(arg: type, arg: type, ...) { /* impl */ }
+          // visible to outside the instance
+          publicMethod(arg:type, arg:type, ...) { /* impl */ }
+        }
+        
         """.trimIndent()
     }
 }

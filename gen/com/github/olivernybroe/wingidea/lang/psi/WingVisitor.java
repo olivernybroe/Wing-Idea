@@ -42,14 +42,6 @@ public class WingVisitor extends PsiElementVisitor {
     visitElement(o);
   }
 
-  public void visitBuiltInContainerType(@NotNull WingBuiltInContainerType o) {
-    visitElement(o);
-  }
-
-  public void visitBuiltInType(@NotNull WingBuiltInType o) {
-    visitElement(o);
-  }
-
   public void visitCallExpression(@NotNull WingCallExpression o) {
     visitExpression(o);
   }
@@ -79,10 +71,6 @@ public class WingVisitor extends PsiElementVisitor {
   }
 
   public void visitContinueStatement(@NotNull WingContinueStatement o) {
-    visitElement(o);
-  }
-
-  public void visitCustomType(@NotNull WingCustomType o) {
     visitElement(o);
   }
 
@@ -118,10 +106,6 @@ public class WingVisitor extends PsiElementVisitor {
     visitElement(o);
   }
 
-  public void visitFieldType(@NotNull WingFieldType o) {
-    visitElement(o);
-  }
-
   public void visitFinallyBlock(@NotNull WingFinallyBlock o) {
     visitElement(o);
   }
@@ -139,10 +123,6 @@ public class WingVisitor extends PsiElementVisitor {
   }
 
   public void visitIfStatement(@NotNull WingIfStatement o) {
-    visitElement(o);
-  }
-
-  public void visitImmutableContainerType(@NotNull WingImmutableContainerType o) {
     visitElement(o);
   }
 
@@ -171,10 +151,6 @@ public class WingVisitor extends PsiElementVisitor {
   }
 
   public void visitInterfaceImplementation(@NotNull WingInterfaceImplementation o) {
-    visitElement(o);
-  }
-
-  public void visitJsonContainerType(@NotNull WingJsonContainerType o) {
     visitElement(o);
   }
 
@@ -222,10 +198,6 @@ public class WingVisitor extends PsiElementVisitor {
     visitElement(o);
   }
 
-  public void visitMutableContainerType(@NotNull WingMutableContainerType o) {
-    visitElement(o);
-  }
-
   public void visitNestedIdentifierExpression(@NotNull WingNestedIdentifierExpression o) {
     visitExpression(o);
   }
@@ -248,10 +220,6 @@ public class WingVisitor extends PsiElementVisitor {
 
   public void visitOptionalTestExpression(@NotNull WingOptionalTestExpression o) {
     visitExpression(o);
-  }
-
-  public void visitOptionalType(@NotNull WingOptionalType o) {
-    visitElement(o);
   }
 
   public void visitParameterDefinition(@NotNull WingParameterDefinition o) {
@@ -296,10 +264,6 @@ public class WingVisitor extends PsiElementVisitor {
 
   public void visitSetLiteralExpression(@NotNull WingSetLiteralExpression o) {
     visitExpression(o);
-  }
-
-  public void visitStatement(@NotNull WingStatement o) {
-    visitElement(o);
   }
 
   public void visitString(@NotNull WingString o) {

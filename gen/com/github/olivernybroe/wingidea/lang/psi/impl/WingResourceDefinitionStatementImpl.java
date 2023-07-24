@@ -28,20 +28,8 @@ public class WingResourceDefinitionStatementImpl extends WingElementImpl impleme
 
   @Override
   @NotNull
-  public List<WingCustomType> getCustomTypeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingCustomType.class);
-  }
-
-  @Override
-  @NotNull
   public WingResourceImplementation getResourceImplementation() {
     return findNotNullChildByClass(WingResourceImplementation.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
   }
 
 }

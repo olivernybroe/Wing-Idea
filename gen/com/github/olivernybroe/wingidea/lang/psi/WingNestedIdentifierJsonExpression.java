@@ -10,9 +10,6 @@ public interface WingNestedIdentifierJsonExpression extends WingExpression {
   @NotNull
   WingAccessor getAccessor();
 
-  @NotNull
-  WingJsonContainerType getJsonContainerType();
-
   @Nullable
   PsiElement getIdentifier();
 

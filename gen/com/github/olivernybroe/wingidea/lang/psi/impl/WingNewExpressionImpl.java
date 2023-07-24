@@ -35,20 +35,14 @@ public class WingNewExpressionImpl extends WingExpressionImpl implements WingNew
 
   @Override
   @Nullable
-  public WingCustomType getCustomType() {
-    return findChildByClass(WingCustomType.class);
+  public WingContainerValueType getContainerValueType() {
+    return findChildByClass(WingContainerValueType.class);
   }
 
   @Override
   @NotNull
   public List<WingExpression> getExpressionList() {
     return PsiTreeUtil.getChildrenOfTypeAsList(this, WingExpression.class);
-  }
-
-  @Override
-  @Nullable
-  public WingMutableContainerType getMutableContainerType() {
-    return findChildByClass(WingMutableContainerType.class);
   }
 
 }

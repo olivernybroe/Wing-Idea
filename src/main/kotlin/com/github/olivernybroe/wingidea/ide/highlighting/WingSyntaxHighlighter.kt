@@ -1,11 +1,13 @@
 package com.github.olivernybroe.wingidea.ide.highlighting
 
 import com.github.olivernybroe.wingidea.lang.lexer.WingLexer
+import com.github.olivernybroe.wingidea.lang.psi.*
 import com.intellij.lexer.Lexer
 import com.intellij.openapi.editor.colors.TextAttributesKey
 import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import com.github.olivernybroe.wingidea.lang.psi.WingElementTypes
+import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
 
 class WingSyntaxHighlighter: SyntaxHighlighterBase() {
     override fun getHighlightingLexer(): Lexer = WingLexer()
@@ -20,6 +22,12 @@ class WingSyntaxHighlighter: SyntaxHighlighterBase() {
             put(WingElementTypes.NUMBER, WingColors.NUMBER)
             put(WingElementTypes.COMMENT, WingColors.LINE_COMMENT)
             put(WingElementTypes.MULTI_LINE_COMMENT, WingColors.BLOCK_COMMENT)
+            //put(WingElementTypes.METHOD_DEFINITION_NAME, WingColors.METHOD_DEFINITION)
+
+            fillMap(this, WING_KEYWORDS, WingColors.KEYWORD)
+            fillMap(this, WING_BRACES, WingColors.BRACES)
+            fillMap(this, WING_BRACKETS, WingColors.BRACKETS)
+            fillMap(this, WING_PARENTHESIS, WingColors.PARENTHESES)
         }
     }
 }

@@ -28,14 +28,14 @@ public class WingTypeImpl extends WingElementImpl implements WingType {
 
   @Override
   @Nullable
-  public WingFieldType getFieldType() {
-    return findChildByClass(WingFieldType.class);
+  public WingContainerValueType getContainerValueType() {
+    return findChildByClass(WingContainerValueType.class);
   }
 
   @Override
   @Nullable
-  public WingOptionalType getOptionalType() {
-    return findChildByClass(WingOptionalType.class);
+  public WingFunctionType getFunctionType() {
+    return findChildByClass(WingFunctionType.class);
   }
 
 }

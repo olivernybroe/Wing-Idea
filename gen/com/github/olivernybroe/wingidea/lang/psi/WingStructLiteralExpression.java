@@ -8,9 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface WingStructLiteralExpression extends WingExpression {
 
   @NotNull
-  WingCustomType getCustomType();
-
-  @NotNull
   List<WingStructLiteralMember> getStructLiteralMemberList();
 
 }

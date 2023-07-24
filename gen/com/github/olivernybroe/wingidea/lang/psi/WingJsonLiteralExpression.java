@@ -11,9 +11,6 @@ public interface WingJsonLiteralExpression extends WingExpression {
   WingExpression getExpression();
 
   @Nullable
-  WingJsonContainerType getJsonContainerType();
-
-  @Nullable
   WingJsonMapLiteral getJsonMapLiteral();
 
 }

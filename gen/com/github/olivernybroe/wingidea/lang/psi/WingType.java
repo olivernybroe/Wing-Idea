@@ -8,9 +8,9 @@ import com.intellij.psi.PsiElement;
 public interface WingType extends WingElement {
 
   @Nullable
-  WingFieldType getFieldType();
+  WingContainerValueType getContainerValueType();
 
   @Nullable
-  WingOptionalType getOptionalType();
+  WingFunctionType getFunctionType();
 
 }

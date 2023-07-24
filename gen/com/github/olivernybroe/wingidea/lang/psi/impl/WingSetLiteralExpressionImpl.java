@@ -29,8 +29,8 @@ public class WingSetLiteralExpressionImpl extends WingExpressionImpl implements 
 
   @Override
   @Nullable
-  public WingBuiltInContainerType getBuiltInContainerType() {
-    return findChildByClass(WingBuiltInContainerType.class);
+  public WingContainerValueType getContainerValueType() {
+    return findChildByClass(WingContainerValueType.class);
   }
 
   @Override

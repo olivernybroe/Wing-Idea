@@ -8,12 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface WingStructDefinitionStatement extends WingElement {
 
   @NotNull
-  List<WingCustomType> getCustomTypeList();
-
-  @NotNull
   WingStructImplementation getStructImplementation();
-
-  @NotNull
-  PsiElement getIdentifier();
 
 }

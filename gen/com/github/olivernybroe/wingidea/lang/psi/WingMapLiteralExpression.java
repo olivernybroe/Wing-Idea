@@ -8,7 +8,7 @@ import com.intellij.psi.PsiElement;
 public interface WingMapLiteralExpression extends WingExpression {
 
   @Nullable
-  WingBuiltInContainerType getBuiltInContainerType();
+  WingContainerValueType getContainerValueType();
 
   @NotNull
   List<WingMapLiteralMember> getMapLiteralMemberList();

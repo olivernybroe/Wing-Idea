@@ -10,4 +10,8 @@ object WingColors {
     val KEYWORD = createTextAttributesKey("WING_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD)
     val IDENTIFIER = createTextAttributesKey("WING_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER)
     val NUMBER = createTextAttributesKey("WING_NUMBER", DefaultLanguageHighlighterColors.NUMBER)
+    val BRACES = createTextAttributesKey("WING_BRACES", DefaultLanguageHighlighterColors.BRACES)
+    val PARENTHESES = createTextAttributesKey("WING_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES)
+    val BRACKETS = createTextAttributesKey("WING_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS)
+    val METHOD_DEFINITION = createTextAttributesKey("WING_METHOD_DEFINITION_NAME", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)
 }

@@ -15,7 +15,6 @@
   psiImplPackage='com.github.olivernybroe.wingidea.lang.psi.impl'
 
   tokens = [
-
     INFLIGHT_SPECIFIER = 'inflight'
     STATIC = 'static'
     BOOL = 'regexp:true|false'
@@ -92,7 +91,7 @@
 
 Schema ::= Statement*
 
-Statement ::=
+private Statement ::=
     ImportStatement
     | TestStatement
     | ExpressionStatement
@@ -194,15 +193,15 @@ Type ::=
     OptionalType
     | FieldType
 
-FieldType ::=
-    BuiltInType
+private FieldType ::=
+    BuiltInType nb
     | BuiltInContainerType
     | FunctionType
     | CustomType
     | JsonContainerType
 
 
-BuiltInType ::=
+private BuiltInType ::=
     "bool"
     | "num"
     | "any"
@@ -210,27 +209,27 @@ BuiltInType ::=
     | "void"
     | "duration"
 
-OptionalType ::=
+private OptionalType ::=
     FieldType QUESTION_MARK
 
-CustomType ::=
+private CustomType ::=
     IDENTIFIER (DOT IDENTIFIER)*
 
-JsonContainerType ::=
+private JsonContainerType ::=
     "Json"
     | "MutJson"
 
-BuiltInContainerType ::=
+private BuiltInContainerType ::=
     ImmutableContainerType
     | MutableContainerType
 
-ImmutableContainerType ::=
+private ImmutableContainerType ::=
     "Array" ContainerValueType
     | "Set" ContainerValueType
     | "Map" ContainerValueType
     | "Promise" ContainerValueType
 
-MutableContainerType ::=
+private MutableContainerType ::=
     "MutSet" ContainerValueType
     | "MutMap" ContainerValueType
     | "MutArray" ContainerValueType

@@ -32,16 +32,4 @@ public class WingClassDefinitionStatementImpl extends WingElementImpl implements
     return findNotNullChildByClass(WingClassImplementation.class);
   }
 
-  @Override
-  @NotNull
-  public List<WingCustomType> getCustomTypeList() {
-    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingCustomType.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
-  }
-
 }
