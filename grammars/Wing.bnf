@@ -18,7 +18,6 @@
 
     INFLIGHT_SPECIFIER = 'inflight'
     STATIC = 'static'
-    REASSIGNABLE = 'var'
     BOOL = 'regexp:true|false'
     INTEGER = 'regexp:0|[1-9]\d*'
     DECIMAL = 'regexp:0\.\d+|[1-9]\d*\.\d+'
@@ -63,17 +62,25 @@
     TRY = 'try'
     CATCH = 'catch'
     FINALLY = 'finally'
-    LEFT_BRACE = '{'
-    RIGHT_BRACE = '}'
+    LEFT_CURLY_BRACE = '{'
+    RIGHT_CURLY_BRACE = '}'
+    LEFT_SQUARE_BRACE = '['
+    RIGHT_SQUARE_BRACE = ']'
+    LEFT_PARENTHESIS = '('
+    RIGHT_PARENTHESIS = ')'
     BREAK = 'break'
     CONTINUE = 'continue'
     RETURN = 'return'
+    DOT = '.'
+    COMMA = ','
     SEMICOLON = ';'
     COLON = ':'
     ARROW = '=>'
     SUPER = 'super'
     QUESTION_MARK = '?'
     COMMENT = 'regexp://.*'
+    AWAIT = 'await'
+    DEFER = 'defer'
     MULTI_LINE_COMMENT = 'regexp:/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/'
     STRING_LITERAL  = 'regexp:\"([^\\\"\r\n]|\\[^\r\n])*\"?'
     IDENTIFIER = 'regexp:[A-Za-z_$][A-Za-z_$0-9]*|[A-Z][A-Z0-9_]*'
@@ -114,7 +121,7 @@ TestStatement ::=
     TEST String BlockStatement
 
 BlockStatement ::=
-    LEFT_BRACE Statement* RIGHT_BRACE
+    LEFT_CURLY_BRACE Statement* RIGHT_CURLY_BRACE
 
 ExpressionStatement ::=
     Expression SEMICOLON
@@ -207,7 +214,7 @@ OptionalType ::=
     FieldType QUESTION_MARK
 
 CustomType ::=
-    IDENTIFIER ("." IDENTIFIER)*
+    IDENTIFIER (DOT IDENTIFIER)*
 
 JsonContainerType ::=
     "Json"
@@ -238,7 +245,7 @@ TypeAnnotation ::=
     INFLIGHT_SPECIFIER? ParameterTypeList [COLON Type]
 
  ParameterTypeList ::=
-    "(" [Type (',' Type)*] ")"
+    LEFT_PARENTHESIS [Type (COMMA Type)*] RIGHT_PARENTHESIS
 
  LiteralExpression ::=
     String
@@ -283,16 +290,16 @@ WhileStatement ::=
     WHILE Expression BlockStatement
 
 ClassDefinitionStatement ::=
-    INFLIGHT_SPECIFIER CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (',' CustomType)*)? ClassImplementation
+    INFLIGHT_SPECIFIER CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (COMMA CustomType)*)? ClassImplementation
 
 ClassImplementation ::=
-    '{' (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* '}'
+    LEFT_CURLY_BRACE (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* RIGHT_CURLY_BRACE
 
 Initializer ::=
     INFLIGHT_SPECIFIER? 'INIT' ParameterList BlockStatement
 
 ParameterList ::=
-    '(' [ParameterDefinition (',' ParameterDefinition)*] ')'
+    LEFT_PARENTHESIS [ParameterDefinition (COMMA ParameterDefinition)*] RIGHT_PARENTHESIS
 
 ParameterDefinition ::=
     VAR? IDENTIFIER TypeAnnotation
@@ -331,26 +338,26 @@ NestedIdentifierJsonExpression ::=
     JsonContainerType Accessor IDENTIFIER?
 
 StructuredAccessExpression ::=
-    Expression '[' Expression ']'
+    Expression LEFT_SQUARE_BRACE Expression RIGHT_SQUARE_BRACE
 
 Accessor ::=
-    '.'
+    DOT
     | '?.'
 
 ResourceDefinitionStatement ::=
-    CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (',' CustomType)*)?  ResourceImplementation
+    CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (COMMA CustomType)*)?  ResourceImplementation
 
 ResourceImplementation ::=
-    '{' (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* '}'
+    LEFT_CURLY_BRACE (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* RIGHT_CURLY_BRACE
 
 ReturnStatement ::=
     RETURN Expression SEMICOLON
 
 InterfaceDefinitionStatement ::=
-    INTERFACE IDENTIFIER (EXTENDS CustomType (',' CustomType)*)? InterfaceImplementation
+    INTERFACE IDENTIFIER (EXTENDS CustomType (COMMA CustomType)*)? InterfaceImplementation
 
 InterfaceImplementation ::=
-    '{' (MethodSignature | InflightMethodSignature | ClassField )* '}'
+    LEFT_CURLY_BRACE (MethodSignature | InflightMethodSignature | ClassField )* RIGHT_CURLY_BRACE
 
 MethodSignature ::=
     ASYNC? IDENTIFIER ParameterList TypeAnnotation SEMICOLON
@@ -359,16 +366,16 @@ InflightMethodSignature ::=
     INFLIGHT_SPECIFIER IDENTIFIER ParameterList TypeAnnotation SEMICOLON
 
 StructDefinitionStatement ::=
-    STRUCT IDENTIFIER (EXTENDS CustomType (',' CustomType)*)? StructImplementation
+    STRUCT IDENTIFIER (EXTENDS CustomType (COMMA CustomType)*)? StructImplementation
 
 StructImplementation ::=
-    '{' StructField* '}'
+    LEFT_CURLY_BRACE StructField* RIGHT_CURLY_BRACE
 
 StructField ::=
     IDENTIFIER TypeAnnotation SEMICOLON
 
 StructLiteralExpression ::=
-    CustomType '{' StructLiteralMember* (',' StructLiteralMember)* '}'
+    CustomType LEFT_CURLY_BRACE StructLiteralMember* (COMMA StructLiteralMember)* RIGHT_CURLY_BRACE
 
 StructLiteralMember ::=
     IDENTIFIER COLON Expression
@@ -383,10 +390,10 @@ CallExpression ::=
     Expression ArgumentList
 
 SuperCallExpression ::=
-    'super' '.' IDENTIFIER ArgumentList
+    'super' DOT IDENTIFIER ArgumentList
 
 ArgumentList ::=
-    '(' (Argument (',' Argument)*)? ')'
+    LEFT_PARENTHESIS (Argument (COMMA Argument)*)? RIGHT_PARENTHESIS
 
 Argument ::=
     Expression
@@ -398,16 +405,16 @@ CollectionLiteralExpression ::=
     | MapLiteralExpression
 
 ArrayLiteralExpression ::=
-    BuiltInContainerType? '[' (Expression (',' Expression)*)? ']'
+    BuiltInContainerType? LEFT_SQUARE_BRACE (Expression (COMMA Expression)*)? RIGHT_SQUARE_BRACE
 
 SetLiteralExpression ::=
-    BuiltInContainerType? '{'( Expression (',' Expression)*)? '}'
+    BuiltInContainerType? LEFT_CURLY_BRACE( Expression (COMMA Expression)*)? RIGHT_CURLY_BRACE
 
 MapLiteralExpression ::=
-    BuiltInContainerType? '{' MapLiteralMember (',' MapLiteralMember)* '}'
+    BuiltInContainerType? LEFT_CURLY_BRACE MapLiteralMember (COMMA MapLiteralMember)* RIGHT_CURLY_BRACE
 
 MapLiteralMember ::=
-    String '=>' Expression
+    String ARROW Expression
 
 NewExpression ::=
     NEW (CustomType | MutableContainerType) ArgumentList Expression? Expression?
@@ -417,25 +424,25 @@ JsonLiteralExpression ::=
     | JsonMapLiteral
 
 JsonMapLiteral ::=
-    '{' (JsonMapLiteralMember (',' JsonMapLiteralMember)*)? '}'
+    LEFT_CURLY_BRACE (JsonMapLiteralMember (COMMA JsonMapLiteralMember)*)? RIGHT_CURLY_BRACE
 
 JsonMapLiteralMember ::=
-    (String | IDENTIFIER) ':' Expression
+    (String | IDENTIFIER) COLON Expression
 
 AwaitExpression ::=
-    'await' Expression
+    AWAIT Expression
 
 DeferExpression ::=
-    'defer' Expression
+    DEFER Expression
 
 ParenthesizedExpression ::=
-    '(' Expression ')'
+    LEFT_PARENTHESIS Expression RIGHT_PARENTHESIS
 
 OptionalTestExpression ::=
-    Expression '?'
+    Expression QUESTION_MARK
 
 EnumDefinitionStatement ::=
-    ENUM IDENTIFIER '{' (EnumField (',' EnumField)* ','?)? '}'
+    ENUM IDENTIFIER LEFT_CURLY_BRACE (EnumField (COMMA EnumField)* COMMA?)? RIGHT_CURLY_BRACE
 
 EnumField ::=
     IDENTIFIER
