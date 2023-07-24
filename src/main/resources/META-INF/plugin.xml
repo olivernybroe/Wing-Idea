@@ -12,17 +12,16 @@
     <resource-bundle>messages.WingBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.olivernybroe.wingidea.toolWindow.MyToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow factoryClass="com.github.olivernybroe.wingidea.ide.toolWindow.WingToolWindowFactory" id="MyToolWindow"/>
         <platform.lsp.serverSupportProvider
-                implementation="com.github.olivernybroe.wingidea.WingLspServerSupportProvider"/>
+                implementation="com.github.olivernybroe.wingidea.ide.lsp.WingLspServerSupportProvider"/>
         <fileType name="Wing"
                   implementationClass="com.github.olivernybroe.wingidea.lang.WingFileType"
                   fieldName="INSTANCE"
                   language="Wing"
                   extensions="w"/>
-        <fileEditorProvider implementation="com.github.olivernybroe.wingidea.WingPreviewEditorProvider"/>
-        <fileEditorProvider implementation="com.github.olivernybroe.wingidea.WingSplitEditorProvider"/>
-        <fileIconProvider implementation="com.github.olivernybroe.wingidea.WingFileIconProvider"/>
+        <fileEditorProvider implementation="com.github.olivernybroe.wingidea.ide.editor.WingPreviewEditorProvider"/>
+        <fileEditorProvider implementation="com.github.olivernybroe.wingidea.ide.editor.WingSplitEditorProvider"/>
         <lang.parserDefinition
                 language="Wing"
                 implementationClass="com.github.olivernybroe.wingidea.lang.parser.WingParserDefinition"
@@ -35,12 +34,8 @@
                 implementationClass="com.github.olivernybroe.wingidea.ide.highlighting.WingHighlightAnnotator"/>
     </extensions>
 
-    <applicationListeners>
-        <listener class="com.github.olivernybroe.wingidea.listeners.MyApplicationActivationListener" topic="com.intellij.openapi.application.ApplicationActivationListener"/>
-    </applicationListeners>
-
     <actions>
-        <action id="Wing.AddWingConnection" class="com.github.olivernybroe.wingidea.AddWingConnectionAction" text="Wing Connection">
+        <action id="Wing.AddWingConnection" class="com.github.olivernybroe.wingidea.ide.servicesWindow.AddWingConnectionAction" text="Wing Connection">
             <add-to-group group-id="ServiceView.AddService"/>
         </action>
     </actions>

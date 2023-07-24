@@ -10,6 +10,10 @@ import com.intellij.codeInspection.util.InspectionMessage
 import com.intellij.lang.annotation.HighlightSeverity
 import com.intellij.openapi.editor.colors.TextAttributesKey
 
+/**
+ * Annotates with PSI aware syntax highlighting.
+ * For basic syntax highlighting see [WingSyntaxHighlighter].
+ */
 class WingHighlightAnnotator : Annotator {
     override fun annotate(element: PsiElement, holder: AnnotationHolder) {
         when (element.elementType) {

@@ -1,9 +1,10 @@
-package com.github.olivernybroe.wingidea
+package com.github.olivernybroe.wingidea.ide.servicesWindow
 
+import com.github.olivernybroe.wingidea.WingIcons
+import com.github.olivernybroe.wingidea.ide.WingCommandLine
 import com.intellij.execution.process.OSProcessHandler
 import com.intellij.execution.process.ProcessEvent
 import com.intellij.execution.process.ProcessListener
-import com.intellij.execution.processTools.getResultStdoutStr
 import com.intellij.openapi.options.SettingsEditor
 import com.intellij.openapi.project.Project
 import com.intellij.remoteServer.ServerType
@@ -17,11 +18,10 @@ import com.intellij.remoteServer.runtime.ServerTaskExecutor
 import com.intellij.remoteServer.runtime.deployment.DeploymentLogManager
 import com.intellij.remoteServer.runtime.deployment.DeploymentTask
 import com.intellij.remoteServer.runtime.deployment.ServerRuntimeInstance
-import com.intellij.util.io.await
 import javax.swing.JComponent
 import javax.swing.JLabel
 
-class WingType(val project: Project) : ServerType<WingConfiguration>("wing") {
+class WingServerType(val project: Project) : ServerType<WingConfiguration>("wing") {
     override fun getPresentableName() = "Wing"
 
     override fun getIcon() = WingIcons.FILE

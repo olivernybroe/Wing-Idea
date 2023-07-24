@@ -1,6 +1,6 @@
-package com.github.olivernybroe.wingidea
+package com.github.olivernybroe.wingidea.ide.editor
 
-import com.github.olivernybroe.wingidea.lang.WingFileType
+import com.github.olivernybroe.wingidea.isWingFile
 import com.intellij.openapi.fileEditor.FileEditor
 import com.intellij.openapi.fileEditor.FileEditorPolicy
 import com.intellij.openapi.fileEditor.FileEditorProvider
@@ -12,8 +12,6 @@ import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.ui.jcef.JBCefBrowserBuilder
 import java.beans.PropertyChangeListener
 import javax.swing.JComponent
-
-
 
 
 class WingPreviewEditorProvider: FileEditorProvider {

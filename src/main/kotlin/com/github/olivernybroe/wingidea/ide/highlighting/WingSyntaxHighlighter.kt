@@ -8,6 +8,10 @@ import com.intellij.openapi.fileTypes.SyntaxHighlighterBase
 import com.intellij.psi.tree.IElementType
 import com.github.olivernybroe.wingidea.lang.psi.WingElementTypes
 
+/**
+ * Defines the syntax highlighting for the Wing language.
+ * Only allows for basic syntax highlighting, for PSI aware syntax highlighting see [WingHighlightAnnotator].
+ */
 class WingSyntaxHighlighter: SyntaxHighlighterBase() {
 
     override fun getHighlightingLexer(): Lexer = WingLexer()

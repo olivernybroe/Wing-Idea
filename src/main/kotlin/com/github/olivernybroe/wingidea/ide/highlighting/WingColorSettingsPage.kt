@@ -11,6 +11,9 @@ import com.intellij.openapi.options.colors.ColorDescriptor
 import com.intellij.openapi.options.colors.ColorSettingsPage
 import javax.swing.Icon
 
+/**
+ * Defines the color settings page for the Wing language.
+ */
 class WingColorSettingsPage: ColorSettingsPage {
 
     override fun getColorDescriptors(): Array<ColorDescriptor> = ColorDescriptor.EMPTY_ARRAY

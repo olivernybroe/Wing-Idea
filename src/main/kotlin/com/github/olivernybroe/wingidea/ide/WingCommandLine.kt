@@ -1,4 +1,4 @@
-package com.github.olivernybroe.wingidea
+package com.github.olivernybroe.wingidea.ide
 
 import com.intellij.execution.ExecutionException
 import com.intellij.execution.configurations.GeneralCommandLine

@@ -13,6 +13,9 @@ import com.intellij.psi.PsiFile
 import com.intellij.psi.tree.IFileElementType
 import com.intellij.psi.tree.TokenSet
 
+/**
+ * Defines the parser definition for the Wing language.
+ */
 class WingParserDefinition: ParserDefinition {
     override fun createLexer(project: Project?): Lexer = WingLexer()
 
