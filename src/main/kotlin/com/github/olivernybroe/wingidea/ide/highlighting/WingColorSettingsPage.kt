@@ -43,9 +43,16 @@ class WingColorSettingsPage: ColorSettingsPage {
             ),
             AttributesDescriptor(
                 WingBundle.messagePointer("options.language.defaults.class.method_definition"),
-                WingColors.METHOD_DEFINITION
+                WingColors.METHOD_DEFINITION_NAME
             ),
-
+            AttributesDescriptor(
+                WingBundle.messagePointer("options.language.defaults.class.enum_field"),
+                WingColors.ENUM_FIELD
+            ),
+            AttributesDescriptor(
+                WingBundle.messagePointer("options.language.defaults.class.field"),
+                WingColors.CLASS_FIELD
+            ),
         )
 
         private val additionalDescriptors = emptyMap<String, TextAttributesKey>()
@@ -64,6 +71,8 @@ class WingColorSettingsPage: ColorSettingsPage {
           bucket.put("wing-${'$'}{index}.txt", "Hello, ${'$'}{message}");
           log("file wing-${'$'}{index}.txt created");
         });
+        
+        enum SomeEnum { ONE, TWO, THREE }
         
         inflight class Name extends Base impl IMyInterface1, IMyInterface2 {
           // class fields

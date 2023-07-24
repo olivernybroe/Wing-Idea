@@ -30,6 +30,9 @@
         <lang.syntaxHighlighterFactory language="Wing"
                                        implementationClass="com.github.olivernybroe.wingidea.ide.highlighting.WingSyntaxHighlighterFactory"/>
         <colorSettingsPage implementation="com.github.olivernybroe.wingidea.ide.highlighting.WingColorSettingsPage"/>
+        <annotator
+                language="Wing"
+                implementationClass="com.github.olivernybroe.wingidea.ide.highlighting.WingHighlightAnnotator"/>
     </extensions>
 
     <applicationListeners>

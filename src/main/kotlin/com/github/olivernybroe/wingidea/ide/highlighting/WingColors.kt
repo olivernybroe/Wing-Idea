@@ -13,5 +13,7 @@ object WingColors {
     val BRACES = createTextAttributesKey("WING_BRACES", DefaultLanguageHighlighterColors.BRACES)
     val PARENTHESES = createTextAttributesKey("WING_PARENTHESES", DefaultLanguageHighlighterColors.PARENTHESES)
     val BRACKETS = createTextAttributesKey("WING_BRACKETS", DefaultLanguageHighlighterColors.BRACKETS)
-    val METHOD_DEFINITION = createTextAttributesKey("WING_METHOD_DEFINITION_NAME", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION)
+    val METHOD_DEFINITION_NAME = createTextAttributesKey("WING_METHOD_DEFINITION_NAME", DefaultLanguageHighlighterColors.INSTANCE_METHOD)
+    val ENUM_FIELD = createTextAttributesKey("WING_ENUM_FIELD", DefaultLanguageHighlighterColors.STATIC_FIELD)
+    val CLASS_FIELD = createTextAttributesKey("WING_CLASS_FIELD", DefaultLanguageHighlighterColors.INSTANCE_FIELD)
 }
