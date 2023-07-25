@@ -4,6 +4,9 @@
 
 ## [Unreleased]
 
+### Added
+- Added support for caret position in arguments
+
 ### Fixed
 - Fixed argument with argument name not being parsed correctly
 
