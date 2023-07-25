@@ -12,6 +12,7 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <toolWindow factoryClass="com.github.olivernybroe.wingidea.ide.toolWindow.WingToolWindowFactory" id="MyToolWindow"/>
+        <!--suppress PluginXmlValidity -->
         <platform.lsp.serverSupportProvider
                 implementation="com.github.olivernybroe.wingidea.ide.lsp.WingLspServerSupportProvider"/>
         <fileType name="Wing"
@@ -31,6 +32,13 @@
         <annotator
                 language="Wing"
                 implementationClass="com.github.olivernybroe.wingidea.ide.highlighting.WingHighlightAnnotator"/>
+        <lang.formatter
+                language="Wing"
+                implementationClass="com.github.olivernybroe.wingidea.ide.formatter.WingFormattingModelBuilder"/>
+        <langCodeStyleSettingsProvider
+                implementation="com.github.olivernybroe.wingidea.ide.formatter.settings.WingLanguageCodeStyleSettingsProvider"/>
+        <lang.braceMatcher language="Wing"
+                           implementationClass="com.github.olivernybroe.wingidea.ide.editor.WingBraceMatcher"/>
     </extensions>
 
     <actions>
