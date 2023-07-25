@@ -41,6 +41,8 @@
                            implementationClass="com.github.olivernybroe.wingidea.ide.editor.WingBraceMatcher"/>
         <lang.commenter language="Wing"
                         implementationClass="com.github.olivernybroe.wingidea.ide.editor.WingCommenter"/>
+        <lang.quoteHandler language="Wing"
+                           implementationClass="com.github.olivernybroe.wingidea.ide.editor.WingQuoteHandler"/>
     </extensions>
 
     <actions>
