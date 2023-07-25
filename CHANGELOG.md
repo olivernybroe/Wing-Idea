@@ -6,7 +6,8 @@
 
 ### Added
 - Added support for caret position in arguments
-- Added brace matching support.
+- Added brace matching support
+- Added commenter support
 
 ### Fixed
 - Fixed argument with argument name not being parsed correctly

@@ -39,6 +39,8 @@
                 implementation="com.github.olivernybroe.wingidea.ide.formatter.settings.WingLanguageCodeStyleSettingsProvider"/>
         <lang.braceMatcher language="Wing"
                            implementationClass="com.github.olivernybroe.wingidea.ide.editor.WingBraceMatcher"/>
+        <lang.commenter language="Wing"
+                        implementationClass="com.github.olivernybroe.wingidea.ide.editor.WingCommenter"/>
     </extensions>
 
     <actions>
