@@ -1,17 +1,26 @@
 {
+  //noinspection BnfResolve
   parserClass='com.github.olivernybroe.wingidea.lang.parser.WingParser'
+  //noinspection BnfResolve
   parserUtilClass='com.github.olivernybroe.wingidea.lang.parser.WingParserUtil'
 
+  //noinspection BnfResolve
   implements='com.github.olivernybroe.wingidea.lang.psi.WingElement'
+  //noinspection BnfResolve
   extends='com.github.olivernybroe.wingidea.lang.psi.impl.WingElementImpl'
 
+//noinspection BnfResolve
   elementTypeHolderClass='com.github.olivernybroe.wingidea.lang.psi.WingElementTypes'
+  //noinspection BnfResolve
   elementTypeClass='com.github.olivernybroe.wingidea.lang.psi.WingElementType'
+  //noinspection BnfResolve
   tokenTypeClass='com.github.olivernybroe.wingidea.lang.psi.WingTokenType'
 
   psiClassPrefix='Wing'
   psiImplClassSuffix='Impl'
+  //noinspection BnfResolve
   psiPackage='com.github.olivernybroe.wingidea.lang.psi'
+  //noinspection BnfResolve
   psiImplPackage='com.github.olivernybroe.wingidea.lang.psi.impl'
 
   tokens = [
@@ -397,8 +406,8 @@ ArgumentList ::=
     LEFT_PARENTHESIS (Argument (COMMA Argument)*)? RIGHT_PARENTHESIS
 
 Argument ::=
-    Expression
-    | IDENTIFIER COLON Expression
+    IDENTIFIER COLON Expression
+    | Expression
 
 CollectionLiteralExpression ::=
     ArrayLiteralExpression
