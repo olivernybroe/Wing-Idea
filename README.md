@@ -12,8 +12,8 @@
 - [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
 <!-- Plugin description -->
-Adds support for the Wing language.
-
+Adds support for the Wing language.  
+  
 Wing combines infrastructure and runtime code in one language, enabling developers to stay in their creative flow,
 and to deliver better software, faster and more securely.
 
