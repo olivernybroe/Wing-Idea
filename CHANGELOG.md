@@ -9,6 +9,7 @@
 - Added brace matching support
 - Added commenter support
 - Added quote handler
+- Added plugin logo
 
 ### Fixed
 - Fixed argument with argument name not being parsed correctly

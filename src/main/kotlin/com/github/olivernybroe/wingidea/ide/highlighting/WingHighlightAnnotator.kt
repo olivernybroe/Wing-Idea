@@ -34,13 +34,13 @@ class WingHighlightAnnotator : Annotator {
     private fun newAnnotation(
         holder: AnnotationHolder, element: PsiElement, textAttributesKey: TextAttributesKey
     ) {
-        newAnnotationBuilder(holder, textAttributesKey.externalName)
+        newAnnotationBuilder(holder)
             .textAttributes(textAttributesKey)
             .range(element)
             .create()
     }
 
-    private fun newAnnotationBuilder(holder: AnnotationHolder, @InspectionMessage tag: String) =
+    private fun newAnnotationBuilder(holder: AnnotationHolder) =
         holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
 
 }

@@ -12,11 +12,16 @@
 - [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
 
 <!-- Plugin description -->
-Adds support for Wing language to IntelliJ IDEA.
+Adds support for the Wing language.
 
-Features:
+Wing combines infrastructure and runtime code in one language, enabling developers to stay in their creative flow,
+and to deliver better software, faster and more securely.
+
+
+The following features are supported:
 - Syntax highlighting
 - LSP support
+- Wing Console browser window
 
 <!-- Plugin description end -->
 
@@ -24,7 +29,7 @@ Features:
 
 - Using IDE built-in plugin system:
   
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Wing Idea"</kbd> >
+  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "Wing"</kbd> >
   <kbd>Install Plugin</kbd>
   
 - Manually:

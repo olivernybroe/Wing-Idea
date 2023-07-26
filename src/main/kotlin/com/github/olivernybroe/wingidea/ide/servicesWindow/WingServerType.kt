@@ -31,7 +31,7 @@ class WingServerType(val project: Project) : ServerType<WingConfiguration>("wing
     }
 
     override fun createDeploymentConfigurator(project: Project): DeploymentConfigurator<*, WingConfiguration> {
-        return WingDeploymentConfigurator(project)
+        return WingDeploymentConfigurator()
     }
 
     override fun createConnector(configuration: WingConfiguration, serverTaskExecutor: ServerTaskExecutor): ServerConnector<*> {
@@ -71,7 +71,7 @@ class WingServerType(val project: Project) : ServerType<WingConfiguration>("wing
     }
 }
 
-class WingDeploymentConfigurator(project: Project): DeploymentConfigurator<WingDeploymentConfiguration, WingConfiguration>() {
+class WingDeploymentConfigurator(): DeploymentConfigurator<WingDeploymentConfiguration, WingConfiguration>() {
     override fun getAvailableDeploymentSources(): MutableList<DeploymentSource> {
         return mutableListOf()
     }
