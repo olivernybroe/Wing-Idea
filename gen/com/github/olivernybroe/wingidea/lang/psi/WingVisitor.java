@@ -130,6 +130,10 @@ public class WingVisitor extends PsiElementVisitor {
     visitElement(o);
   }
 
+  public void visitImportStatementBlock(@NotNull WingImportStatementBlock o) {
+    visitElement(o);
+  }
+
   public void visitInflightClosureExpression(@NotNull WingInflightClosureExpression o) {
     visitExpression(o);
   }

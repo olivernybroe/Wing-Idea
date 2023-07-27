@@ -43,6 +43,10 @@
                         implementationClass="com.github.olivernybroe.wingidea.ide.editor.WingCommenter"/>
         <lang.quoteHandler language="Wing"
                            implementationClass="com.github.olivernybroe.wingidea.ide.editor.WingQuoteHandler"/>
+        <lang.foldingBuilder language="Wing"
+                             implementationClass="com.github.olivernybroe.wingidea.ide.folding.WingBlockFoldingBuilder"/>
+        <lang.foldingBuilder language="Wing"
+                             implementationClass="com.github.olivernybroe.wingidea.ide.folding.WingImportFoldingBuilder"/>
     </extensions>
 
     <actions>

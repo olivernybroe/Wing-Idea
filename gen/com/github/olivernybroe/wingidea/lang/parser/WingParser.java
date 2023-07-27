@@ -1045,6 +1045,30 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
+  // ImportStatement ImportStatement*
+  public static boolean ImportStatementBlock(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportStatementBlock")) return false;
+    if (!nextTokenIs(b, BRING)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = ImportStatement(b, l + 1);
+    r = r && ImportStatementBlock_1(b, l + 1);
+    exit_section_(b, m, IMPORT_STATEMENT_BLOCK, r);
+    return r;
+  }
+
+  // ImportStatement*
+  private static boolean ImportStatementBlock_1(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ImportStatementBlock_1")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!ImportStatement(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "ImportStatementBlock_1", c)) break;
+    }
+    return true;
+  }
+
+  /* ********************************************************** */
   // ExternModifier? AccessModifier? static? INFLIGHT_SPECIFIER IDENTIFIER ParameterList TypeAnnotation? (BlockStatement | SEMICOLON)
   public static boolean InflightMethodDefinition(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "InflightMethodDefinition")) return false;
@@ -1954,7 +1978,7 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // ImportStatement
+  // ImportStatementBlock
   //     | TestStatement
   //     | ExpressionStatement
   //     | ForInLoopStatement
@@ -1976,7 +2000,7 @@ public class WingParser implements PsiParser, LightPsiParser {
   static boolean Statement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Statement")) return false;
     boolean r;
-    r = ImportStatement(b, l + 1);
+    r = ImportStatementBlock(b, l + 1);
     if (!r) r = TestStatement(b, l + 1);
     if (!r) r = ExpressionStatement(b, l + 1);
     if (!r) r = ForInLoopStatement(b, l + 1);

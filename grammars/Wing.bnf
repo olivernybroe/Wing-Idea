@@ -103,7 +103,7 @@
 Schema ::= Statement*
 
 private Statement ::=
-    ImportStatement
+    ImportStatementBlock
     | TestStatement
     | ExpressionStatement
     | ForInLoopStatement
@@ -122,6 +122,9 @@ private Statement ::=
     | IfLetStatement
     | TryCatchStatement
     | SuperConstructorStatement
+
+ImportStatementBlock ::=
+    ImportStatement ImportStatement*
 
 ImportStatement ::=
     BRING IDENTIFIER SEMICOLON

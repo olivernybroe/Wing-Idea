@@ -39,6 +39,7 @@ public interface WingElementTypes {
   IElementType IF_LET_STATEMENT = new WingElementType("IF_LET_STATEMENT");
   IElementType IF_STATEMENT = new WingElementType("IF_STATEMENT");
   IElementType IMPORT_STATEMENT = new WingElementType("IMPORT_STATEMENT");
+  IElementType IMPORT_STATEMENT_BLOCK = new WingElementType("IMPORT_STATEMENT_BLOCK");
   IElementType INFLIGHT_CLOSURE_EXPRESSION = new WingElementType("INFLIGHT_CLOSURE_EXPRESSION");
   IElementType INFLIGHT_METHOD_DEFINITION = new WingElementType("INFLIGHT_METHOD_DEFINITION");
   IElementType INFLIGHT_METHOD_SIGNATURE = new WingElementType("INFLIGHT_METHOD_SIGNATURE");
@@ -253,6 +254,9 @@ public interface WingElementTypes {
       }
       else if (type == IMPORT_STATEMENT) {
         return new WingImportStatementImpl(node);
+      }
+      else if (type == IMPORT_STATEMENT_BLOCK) {
+        return new WingImportStatementBlockImpl(node);
       }
       else if (type == INFLIGHT_CLOSURE_EXPRESSION) {
         return new WingInflightClosureExpressionImpl(node);

@@ -32,7 +32,7 @@ public interface WingBlockStatement extends WingElement {
   List<WingIfStatement> getIfStatementList();
 
   @NotNull
-  List<WingImportStatement> getImportStatementList();
+  List<WingImportStatementBlock> getImportStatementBlockList();
 
   @NotNull
   List<WingInterfaceDefinitionStatement> getInterfaceDefinitionStatementList();
