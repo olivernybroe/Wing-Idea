@@ -258,7 +258,7 @@ TypeAnnotation ::=
     INFLIGHT_SPECIFIER? ParameterTypeList [COLON Type]
 
  ParameterTypeList ::=
-    LEFT_PARENTHESIS [Type (COMMA Type)*] RIGHT_PARENTHESIS
+    LEFT_PARENTHESIS [Type (COMMA Type)* COMMA?] RIGHT_PARENTHESIS
 
  LiteralExpression ::=
     String
@@ -312,7 +312,7 @@ Initializer ::=
     INFLIGHT_SPECIFIER? INIT ParameterList BlockStatement
 
 ParameterList ::=
-    LEFT_PARENTHESIS [ParameterDefinition (COMMA ParameterDefinition)*] RIGHT_PARENTHESIS
+    LEFT_PARENTHESIS [ParameterDefinition (COMMA ParameterDefinition)* COMMA?] RIGHT_PARENTHESIS
 
 ParameterDefinition ::=
     VAR? IDENTIFIER TypeAnnotation
@@ -388,7 +388,7 @@ StructField ::=
     IDENTIFIER TypeAnnotation SEMICOLON
 
 StructLiteralExpression ::=
-    CustomType LEFT_CURLY_BRACE StructLiteralMember* (COMMA StructLiteralMember)* RIGHT_CURLY_BRACE
+    CustomType LEFT_CURLY_BRACE StructLiteralMember* (COMMA StructLiteralMember)* COMMA? RIGHT_CURLY_BRACE
 
 StructLiteralMember ::=
     IDENTIFIER COLON Expression
@@ -406,7 +406,7 @@ SuperCallExpression ::=
     'super' DOT IDENTIFIER ArgumentList
 
 ArgumentList ::=
-    LEFT_PARENTHESIS (Argument (COMMA Argument)*)? RIGHT_PARENTHESIS
+    LEFT_PARENTHESIS (Argument (COMMA Argument)* COMMA?)? RIGHT_PARENTHESIS
 
 Argument ::=
     IDENTIFIER COLON Expression
@@ -418,13 +418,13 @@ CollectionLiteralExpression ::=
     | MapLiteralExpression
 
 ArrayLiteralExpression ::=
-    BuiltInContainerType? LEFT_SQUARE_BRACE (Expression (COMMA Expression)*)? RIGHT_SQUARE_BRACE
+    BuiltInContainerType? LEFT_SQUARE_BRACE (Expression (COMMA Expression)* COMMA?)? RIGHT_SQUARE_BRACE
 
 SetLiteralExpression ::=
-    BuiltInContainerType? LEFT_CURLY_BRACE( Expression (COMMA Expression)*)? RIGHT_CURLY_BRACE
+    BuiltInContainerType? LEFT_CURLY_BRACE( Expression (COMMA Expression)* COMMA?)? RIGHT_CURLY_BRACE
 
 MapLiteralExpression ::=
-    BuiltInContainerType? LEFT_CURLY_BRACE MapLiteralMember (COMMA MapLiteralMember)* RIGHT_CURLY_BRACE
+    BuiltInContainerType? LEFT_CURLY_BRACE MapLiteralMember (COMMA MapLiteralMember)* COMMA? RIGHT_CURLY_BRACE
 
 MapLiteralMember ::=
     String ARROW Expression
@@ -437,7 +437,7 @@ JsonLiteralExpression ::=
     | JsonMapLiteral
 
 JsonMapLiteral ::=
-    LEFT_CURLY_BRACE (JsonMapLiteralMember (COMMA JsonMapLiteralMember)*)? RIGHT_CURLY_BRACE
+    LEFT_CURLY_BRACE (JsonMapLiteralMember (COMMA JsonMapLiteralMember)* COMMA?)? RIGHT_CURLY_BRACE
 
 JsonMapLiteralMember ::=
     (String | IDENTIFIER) COLON Expression

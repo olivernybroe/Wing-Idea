@@ -97,7 +97,7 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LEFT_PARENTHESIS (Argument (COMMA Argument)*)? RIGHT_PARENTHESIS
+  // LEFT_PARENTHESIS (Argument (COMMA Argument)* COMMA?)? RIGHT_PARENTHESIS
   public static boolean ArgumentList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArgumentList")) return false;
     if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
@@ -110,20 +110,21 @@ public class WingParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (Argument (COMMA Argument)*)?
+  // (Argument (COMMA Argument)* COMMA?)?
   private static boolean ArgumentList_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArgumentList_1")) return false;
     ArgumentList_1_0(b, l + 1);
     return true;
   }
 
-  // Argument (COMMA Argument)*
+  // Argument (COMMA Argument)* COMMA?
   private static boolean ArgumentList_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArgumentList_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Argument(b, l + 1);
     r = r && ArgumentList_1_0_1(b, l + 1);
+    r = r && ArgumentList_1_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -150,8 +151,15 @@ public class WingParser implements PsiParser, LightPsiParser {
     return r;
   }
 
+  // COMMA?
+  private static boolean ArgumentList_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ArgumentList_1_0_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
+  }
+
   /* ********************************************************** */
-  // BuiltInContainerType? LEFT_SQUARE_BRACE (Expression (COMMA Expression)*)? RIGHT_SQUARE_BRACE
+  // BuiltInContainerType? LEFT_SQUARE_BRACE (Expression (COMMA Expression)* COMMA?)? RIGHT_SQUARE_BRACE
   public static boolean ArrayLiteralExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArrayLiteralExpression")) return false;
     boolean r;
@@ -171,20 +179,21 @@ public class WingParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // (Expression (COMMA Expression)*)?
+  // (Expression (COMMA Expression)* COMMA?)?
   private static boolean ArrayLiteralExpression_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArrayLiteralExpression_2")) return false;
     ArrayLiteralExpression_2_0(b, l + 1);
     return true;
   }
 
-  // Expression (COMMA Expression)*
+  // Expression (COMMA Expression)* COMMA?
   private static boolean ArrayLiteralExpression_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ArrayLiteralExpression_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Expression(b, l + 1, -1);
     r = r && ArrayLiteralExpression_2_0_1(b, l + 1);
+    r = r && ArrayLiteralExpression_2_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -209,6 +218,13 @@ public class WingParser implements PsiParser, LightPsiParser {
     r = r && Expression(b, l + 1, -1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean ArrayLiteralExpression_2_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ArrayLiteralExpression_2_0_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */
@@ -1261,7 +1277,7 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LEFT_CURLY_BRACE (JsonMapLiteralMember (COMMA JsonMapLiteralMember)*)? RIGHT_CURLY_BRACE
+  // LEFT_CURLY_BRACE (JsonMapLiteralMember (COMMA JsonMapLiteralMember)* COMMA?)? RIGHT_CURLY_BRACE
   public static boolean JsonMapLiteral(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "JsonMapLiteral")) return false;
     if (!nextTokenIs(b, LEFT_CURLY_BRACE)) return false;
@@ -1274,20 +1290,21 @@ public class WingParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // (JsonMapLiteralMember (COMMA JsonMapLiteralMember)*)?
+  // (JsonMapLiteralMember (COMMA JsonMapLiteralMember)* COMMA?)?
   private static boolean JsonMapLiteral_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "JsonMapLiteral_1")) return false;
     JsonMapLiteral_1_0(b, l + 1);
     return true;
   }
 
-  // JsonMapLiteralMember (COMMA JsonMapLiteralMember)*
+  // JsonMapLiteralMember (COMMA JsonMapLiteralMember)* COMMA?
   private static boolean JsonMapLiteral_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "JsonMapLiteral_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = JsonMapLiteralMember(b, l + 1);
     r = r && JsonMapLiteral_1_0_1(b, l + 1);
+    r = r && JsonMapLiteral_1_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1312,6 +1329,13 @@ public class WingParser implements PsiParser, LightPsiParser {
     r = r && JsonMapLiteralMember(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean JsonMapLiteral_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "JsonMapLiteral_1_0_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */
@@ -1374,7 +1398,7 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BuiltInContainerType? LEFT_CURLY_BRACE MapLiteralMember (COMMA MapLiteralMember)* RIGHT_CURLY_BRACE
+  // BuiltInContainerType? LEFT_CURLY_BRACE MapLiteralMember (COMMA MapLiteralMember)* COMMA? RIGHT_CURLY_BRACE
   public static boolean MapLiteralExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "MapLiteralExpression")) return false;
     boolean r;
@@ -1383,6 +1407,7 @@ public class WingParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, LEFT_CURLY_BRACE);
     r = r && MapLiteralMember(b, l + 1);
     r = r && MapLiteralExpression_3(b, l + 1);
+    r = r && MapLiteralExpression_4(b, l + 1);
     r = r && consumeToken(b, RIGHT_CURLY_BRACE);
     exit_section_(b, l, m, r, false, null);
     return r;
@@ -1415,6 +1440,13 @@ public class WingParser implements PsiParser, LightPsiParser {
     r = r && MapLiteralMember(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean MapLiteralExpression_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "MapLiteralExpression_4")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */
@@ -1652,7 +1684,7 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // LEFT_PARENTHESIS [ParameterDefinition (COMMA ParameterDefinition)*] RIGHT_PARENTHESIS
+  // LEFT_PARENTHESIS [ParameterDefinition (COMMA ParameterDefinition)* COMMA?] RIGHT_PARENTHESIS
   public static boolean ParameterList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ParameterList")) return false;
     if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
@@ -1665,20 +1697,21 @@ public class WingParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [ParameterDefinition (COMMA ParameterDefinition)*]
+  // [ParameterDefinition (COMMA ParameterDefinition)* COMMA?]
   private static boolean ParameterList_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ParameterList_1")) return false;
     ParameterList_1_0(b, l + 1);
     return true;
   }
 
-  // ParameterDefinition (COMMA ParameterDefinition)*
+  // ParameterDefinition (COMMA ParameterDefinition)* COMMA?
   private static boolean ParameterList_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ParameterList_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = ParameterDefinition(b, l + 1);
     r = r && ParameterList_1_0_1(b, l + 1);
+    r = r && ParameterList_1_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1705,8 +1738,15 @@ public class WingParser implements PsiParser, LightPsiParser {
     return r;
   }
 
+  // COMMA?
+  private static boolean ParameterList_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ParameterList_1_0_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
+  }
+
   /* ********************************************************** */
-  // LEFT_PARENTHESIS [Type (COMMA Type)*] RIGHT_PARENTHESIS
+  // LEFT_PARENTHESIS [Type (COMMA Type)* COMMA?] RIGHT_PARENTHESIS
   public static boolean ParameterTypeList(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ParameterTypeList")) return false;
     if (!nextTokenIs(b, LEFT_PARENTHESIS)) return false;
@@ -1719,20 +1759,21 @@ public class WingParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // [Type (COMMA Type)*]
+  // [Type (COMMA Type)* COMMA?]
   private static boolean ParameterTypeList_1(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ParameterTypeList_1")) return false;
     ParameterTypeList_1_0(b, l + 1);
     return true;
   }
 
-  // Type (COMMA Type)*
+  // Type (COMMA Type)* COMMA?
   private static boolean ParameterTypeList_1_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ParameterTypeList_1_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Type(b, l + 1);
     r = r && ParameterTypeList_1_0_1(b, l + 1);
+    r = r && ParameterTypeList_1_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1757,6 +1798,13 @@ public class WingParser implements PsiParser, LightPsiParser {
     r = r && Type(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean ParameterTypeList_1_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "ParameterTypeList_1_0_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */
@@ -1917,7 +1965,7 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // BuiltInContainerType? LEFT_CURLY_BRACE( Expression (COMMA Expression)*)? RIGHT_CURLY_BRACE
+  // BuiltInContainerType? LEFT_CURLY_BRACE( Expression (COMMA Expression)* COMMA?)? RIGHT_CURLY_BRACE
   public static boolean SetLiteralExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SetLiteralExpression")) return false;
     boolean r;
@@ -1937,20 +1985,21 @@ public class WingParser implements PsiParser, LightPsiParser {
     return true;
   }
 
-  // ( Expression (COMMA Expression)*)?
+  // ( Expression (COMMA Expression)* COMMA?)?
   private static boolean SetLiteralExpression_2(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SetLiteralExpression_2")) return false;
     SetLiteralExpression_2_0(b, l + 1);
     return true;
   }
 
-  // Expression (COMMA Expression)*
+  // Expression (COMMA Expression)* COMMA?
   private static boolean SetLiteralExpression_2_0(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "SetLiteralExpression_2_0")) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = Expression(b, l + 1, -1);
     r = r && SetLiteralExpression_2_0_1(b, l + 1);
+    r = r && SetLiteralExpression_2_0_2(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -1975,6 +2024,13 @@ public class WingParser implements PsiParser, LightPsiParser {
     r = r && Expression(b, l + 1, -1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean SetLiteralExpression_2_0_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "SetLiteralExpression_2_0_2")) return false;
+    consumeToken(b, COMMA);
+    return true;
   }
 
   /* ********************************************************** */
@@ -2714,7 +2770,7 @@ public class WingParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // CustomType LEFT_CURLY_BRACE StructLiteralMember* (COMMA StructLiteralMember)* RIGHT_CURLY_BRACE
+  // CustomType LEFT_CURLY_BRACE StructLiteralMember* (COMMA StructLiteralMember)* COMMA? RIGHT_CURLY_BRACE
   public static boolean StructLiteralExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "StructLiteralExpression")) return false;
     if (!nextTokenIsSmart(b, IDENTIFIER)) return false;
@@ -2724,6 +2780,7 @@ public class WingParser implements PsiParser, LightPsiParser {
     r = r && consumeToken(b, LEFT_CURLY_BRACE);
     r = r && StructLiteralExpression_2(b, l + 1);
     r = r && StructLiteralExpression_3(b, l + 1);
+    r = r && StructLiteralExpression_4(b, l + 1);
     r = r && consumeToken(b, RIGHT_CURLY_BRACE);
     exit_section_(b, m, STRUCT_LITERAL_EXPRESSION, r);
     return r;
@@ -2760,6 +2817,13 @@ public class WingParser implements PsiParser, LightPsiParser {
     r = r && StructLiteralMember(b, l + 1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // COMMA?
+  private static boolean StructLiteralExpression_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructLiteralExpression_4")) return false;
+    consumeTokenSmart(b, COMMA);
+    return true;
   }
 
 }

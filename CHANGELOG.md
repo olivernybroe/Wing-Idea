@@ -5,8 +5,9 @@
 ## [Unreleased]
 
 ### Added
-- Added folding suppport for blocks
-- Added folding suppport for imports
+- Added folding support for blocks
+- Added folding support for imports
+- Added support for trailing comma
 
 ## [0.0.2] - 2023-07-27
 
