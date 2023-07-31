@@ -40,6 +40,12 @@ java {
     }
 }
 
+idea {
+    module {
+        generatedSourceDirs.add(file("gen"))
+    }
+}
+
 // Configure Gradle IntelliJ Plugin - read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
     pluginName = properties("pluginName")
