@@ -8,6 +8,7 @@
 - Added folding support for blocks
 - Added folding support for imports
 - Added support for trailing comma
+- Make it explicitly not require restart for install
 
 ## [0.0.2] - 2023-07-27
 
