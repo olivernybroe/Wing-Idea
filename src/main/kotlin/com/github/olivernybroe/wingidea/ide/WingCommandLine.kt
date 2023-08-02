@@ -8,10 +8,16 @@ import com.intellij.javascript.nodejs.interpreter.wsl.WslNodeInterpreter
 import com.intellij.javascript.nodejs.npm.NpmManager
 import com.intellij.openapi.project.Project
 
-class WingCommandLine(val project: Project, val command: String) {
+
+/**
+ * Defines small wrapper functions around GeneralCommandLine to run wing commands.
+ *
+ * @see [GeneralCommandLine]
+ */
+class WingCommandLine {
 
     companion object {
-        fun CreateCommand(project: Project, vararg commands: String): GeneralCommandLine {
+        fun createCommand(project: Project, vararg commands: String): GeneralCommandLine {
             val interpreter = NodeJsInterpreterManager.getInstance(project).interpreter
             if (interpreter !is NodeJsLocalInterpreter && interpreter !is WslNodeInterpreter) {
                 // shouldn't happen, checked in PrismaLspServerSupportProvider
@@ -30,7 +36,7 @@ class WingCommandLine(val project: Project, val command: String) {
             }
         }
 
-        fun CreateLsp(project: Project): GeneralCommandLine = CreateCommand(project, "lsp")
-        fun CreateConsole(project: Project): GeneralCommandLine = CreateCommand(project, "it", "--no-open")
+        fun createLsp(project: Project): GeneralCommandLine = createCommand(project, "lsp")
+        fun createConsole(project: Project): GeneralCommandLine = createCommand(project, "it", "--no-open")
     }
 }

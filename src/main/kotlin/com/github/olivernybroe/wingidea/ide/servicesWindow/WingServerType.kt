@@ -37,7 +37,7 @@ class WingServerType(val project: Project) : ServerType<WingConfiguration>("wing
     override fun createConnector(configuration: WingConfiguration, serverTaskExecutor: ServerTaskExecutor): ServerConnector<*> {
         return object : ServerConnector<WingDeploymentConfiguration>() {
             override fun connect(connectionCallback: ConnectionCallback<WingDeploymentConfiguration>) {
-                val command = WingCommandLine.CreateConsole(configuration.project)
+                val command = WingCommandLine.createConsole(configuration.project)
 
                 serverTaskExecutor.submit {
                     val process = OSProcessHandler(command)

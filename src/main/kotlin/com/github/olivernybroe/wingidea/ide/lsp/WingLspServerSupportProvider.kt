@@ -24,7 +24,7 @@ class WingLspServerSupportProvider : LspServerSupportProvider {
 
 private class WingLspServerDescriptor(project: Project) : ProjectWideLspServerDescriptor(project, "Wing") {
     override fun isSupportedFile(file: VirtualFile) = file.extension == "w"
-    override fun createCommandLine() = WingCommandLine.CreateLsp(project)
+    override fun createCommandLine() = WingCommandLine.createLsp(project)
 
     override val lspCompletionSupport: LspCompletionSupport
         get() = object : LspCompletionSupport() {

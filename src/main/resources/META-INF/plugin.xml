@@ -47,6 +47,8 @@
                              implementationClass="com.github.olivernybroe.wingidea.ide.folding.WingBlockFoldingBuilder"/>
         <lang.foldingBuilder language="Wing"
                              implementationClass="com.github.olivernybroe.wingidea.ide.folding.WingImportFoldingBuilder"/>
+        <backgroundPostStartupActivity
+                implementation="com.github.olivernybroe.wingidea.ide.WingFileChangedStartupActivity"/>
     </extensions>
 
     <actions>

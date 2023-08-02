@@ -8,6 +8,10 @@ import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
 import com.github.olivernybroe.wingidea.WingBundle
+import com.github.olivernybroe.wingidea.ide.services.WingConsoleManager
+import com.intellij.openapi.components.service
+import com.intellij.ui.jcef.JBCefBrowser
+import com.intellij.ui.jcef.JBCefBrowserBuilder
 import javax.swing.JButton
 
 
@@ -29,15 +33,11 @@ class WingToolWindowFactory : ToolWindowFactory {
     override fun shouldBeAvailable(project: Project) = true
 
     class MyToolWindow(toolWindow: ToolWindow) {
-        fun getContent() = JBPanel<JBPanel<*>>().apply {
-            val label = JBLabel(WingBundle.message("randomLabel", "?"))
+        private val consoleManager = toolWindow.project.service<WingConsoleManager>()
+        private val browser = JBCefBrowserBuilder().setUrl("${consoleManager.host}:${consoleManager.port}").build()
 
-            add(label)
-            add(JButton(WingBundle.message("shuffle")).apply {
-                addActionListener {
-                    label.text = "Button pressed..."
-                }
-            })
+        fun getContent() = JBPanel<JBPanel<*>>().apply {
+            add(browser.component)
         }
     }
 }
