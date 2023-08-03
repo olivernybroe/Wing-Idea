@@ -12,6 +12,7 @@ import com.github.olivernybroe.wingidea.ide.services.WingConsoleManager
 import com.intellij.openapi.components.service
 import com.intellij.ui.jcef.JBCefBrowser
 import com.intellij.ui.jcef.JBCefBrowserBuilder
+import kotlinx.coroutines.runBlocking
 import javax.swing.JButton
 
 
@@ -37,6 +38,7 @@ class WingToolWindowFactory : ToolWindowFactory {
         private val browser = JBCefBrowserBuilder().setUrl("${consoleManager.host}:${consoleManager.port}").build()
 
         fun getContent() = JBPanel<JBPanel<*>>().apply {
+            add(JButton("Reload").apply { addActionListener { browser.cefBrowser.reload() } })
             add(browser.component)
         }
     }

@@ -20,8 +20,6 @@
                   fieldName="INSTANCE"
                   language="Wing"
                   extensions="w"/>
-        <fileEditorProvider implementation="com.github.olivernybroe.wingidea.ide.editor.WingPreviewEditorProvider"/>
-        <fileEditorProvider implementation="com.github.olivernybroe.wingidea.ide.editor.WingSplitEditorProvider"/>
         <lang.parserDefinition
                 language="Wing"
                 implementationClass="com.github.olivernybroe.wingidea.lang.parser.WingParserDefinition"

@@ -1,13 +1,18 @@
 package com.github.olivernybroe.wingidea.ide.services
 
 import com.github.olivernybroe.wingidea.ide.WingCommandLine
-import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.execution.process.OSProcessHandler
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
-import com.intellij.ui.jcef.JBCefBrowser
-import com.intellij.ui.jcef.JBCefBrowserBuilder
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.request.*
+import io.ktor.serialization.kotlinx.json.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
 
 /**
  * Manages the Wing Console command.
@@ -23,7 +28,15 @@ class WingConsoleManager(val project: Project): Disposable {
     var port: Int? = 3000
     var host: String? = "localhost"
     var processHandler: OSProcessHandler? = null
-    var browser: JBCefBrowser = JBCefBrowserBuilder().build()
+    private val client = HttpClient(CIO) {
+        install(ContentNegotiation) {
+            json(Json {
+                prettyPrint = true
+                isLenient = true
+            })
+        }
+    }
+
     val isRunning: Boolean
         get() = processHandler?.isProcessTerminated == false
 
@@ -35,8 +48,6 @@ class WingConsoleManager(val project: Project): Disposable {
         val command = WingCommandLine.createConsole(project)
 
         processHandler = OSProcessHandler(command)
-        browser.loadURL("http://localhost:3000")
-        browser.cefBrowser.reload()
         this.path = path
     }
 
@@ -45,18 +56,48 @@ class WingConsoleManager(val project: Project): Disposable {
         processHandler = null
     }
 
-    fun restart() {
-        if (path == null) {
-            throw Exception("No path set")
-        }
-
-        startForPath(path!!)
-    }
     fun isRunningForPath(path: String): Boolean {
         return this.path == path && isRunning
     }
 
-    override fun dispose() {
-        browser?.dispose()
+    suspend fun getResources(): WingResource {
+        return client.get("http://localhost:3000/trpc/app.explorerTree")
+            .body<Response<WingResource>>()
+            .result
+            .data
     }
+
+    // Websocket support -
+    // ws://localhost:3000/trpc
+    // { 	"id": 200, 	"method": "subscription", 	"params": { 		"path": "app.invalidateQuery" 	} }
+
+
+    override fun dispose() {
+        processHandler?.destroyProcess()
+    }
+
+    @Serializable
+    data class Response<T>(
+        val result: Result<T>,
+    )
+
+    @Serializable
+    data class Result<T>(
+        val data: T,
+    )
+
+    @Serializable
+    data class WingResource(
+        val id: String,
+        val label: String,
+        val type: String,
+        val childItems: List<WingResource>? = null,
+        val display: ResourceDisplay? = null,
+    )
+
+    @Serializable
+    data class ResourceDisplay(
+        val title: String,
+        val description: String,
+    )
 }
