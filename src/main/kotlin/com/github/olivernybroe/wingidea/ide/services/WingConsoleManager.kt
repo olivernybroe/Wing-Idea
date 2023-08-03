@@ -70,6 +70,7 @@ class WingConsoleManager(val project: Project): Disposable {
     // Websocket support -
     // ws://localhost:3000/trpc
     // { 	"id": 200, 	"method": "subscription", 	"params": { 		"path": "app.invalidateQuery" 	} }
+    // For all trcpc calls https://github.com/winglang/wing/blob/03d68be294d2dd60bed854a52a6ec30ebcbe62ed/apps/wing-console/console/server/src/router/app.ts#L52
 
 
     override fun dispose() {
