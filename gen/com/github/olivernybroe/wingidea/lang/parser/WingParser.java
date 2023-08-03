@@ -1036,27 +1036,15 @@ public class WingParser implements PsiParser, LightPsiParser {
 
   /* ********************************************************** */
   // BRING IDENTIFIER SEMICOLON
-  //     | BRING String ALIAS IDENTIFIER SEMICOLON
+  //     | BRING IDENTIFIER ALIAS IDENTIFIER SEMICOLON
   public static boolean ImportStatement(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "ImportStatement")) return false;
     if (!nextTokenIs(b, BRING)) return false;
     boolean r;
     Marker m = enter_section_(b);
     r = parseTokens(b, 0, BRING, IDENTIFIER, SEMICOLON);
-    if (!r) r = ImportStatement_1(b, l + 1);
+    if (!r) r = parseTokens(b, 0, BRING, IDENTIFIER, ALIAS, IDENTIFIER, SEMICOLON);
     exit_section_(b, m, IMPORT_STATEMENT, r);
-    return r;
-  }
-
-  // BRING String ALIAS IDENTIFIER SEMICOLON
-  private static boolean ImportStatement_1(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "ImportStatement_1")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeToken(b, BRING);
-    r = r && String(b, l + 1);
-    r = r && consumeTokens(b, 0, ALIAS, IDENTIFIER, SEMICOLON);
-    exit_section_(b, m, null, r);
     return r;
   }
 
@@ -2502,7 +2490,7 @@ public class WingParser implements PsiParser, LightPsiParser {
     return r || p;
   }
 
-  // NEW (CustomType | MutableContainerType) ArgumentList Expression? Expression?
+  // NEW (CustomType | MutableContainerType) ArgumentList (ALIAS Expression)? (IN Expression)?
   public static boolean NewExpression(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NewExpression")) return false;
     if (!nextTokenIsSmart(b, NEW)) return false;
@@ -2526,18 +2514,40 @@ public class WingParser implements PsiParser, LightPsiParser {
     return r;
   }
 
-  // Expression?
+  // (ALIAS Expression)?
   private static boolean NewExpression_3(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NewExpression_3")) return false;
-    Expression(b, l + 1, -1);
+    NewExpression_3_0(b, l + 1);
     return true;
   }
 
-  // Expression?
+  // ALIAS Expression
+  private static boolean NewExpression_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "NewExpression_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokenSmart(b, ALIAS);
+    r = r && Expression(b, l + 1, -1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // (IN Expression)?
   private static boolean NewExpression_4(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "NewExpression_4")) return false;
-    Expression(b, l + 1, -1);
+    NewExpression_4_0(b, l + 1);
     return true;
+  }
+
+  // IN Expression
+  private static boolean NewExpression_4_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "NewExpression_4_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokenSmart(b, IN);
+    r = r && Expression(b, l + 1, -1);
+    exit_section_(b, m, null, r);
+    return r;
   }
 
   // JsonContainerType Expression

@@ -128,7 +128,7 @@ ImportStatementBlock ::=
 
 ImportStatement ::=
     BRING IDENTIFIER SEMICOLON
-    | BRING String ALIAS IDENTIFIER SEMICOLON
+    | BRING IDENTIFIER ALIAS IDENTIFIER SEMICOLON
 
 TestStatement ::=
     TEST String BlockStatement
@@ -430,7 +430,7 @@ MapLiteralMember ::=
     String ARROW Expression
 
 NewExpression ::=
-    NEW (CustomType | MutableContainerType) ArgumentList Expression? Expression?
+    NEW (CustomType | MutableContainerType) ArgumentList (ALIAS Expression)? (IN Expression)?
 
 JsonLiteralExpression ::=
     JsonContainerType Expression

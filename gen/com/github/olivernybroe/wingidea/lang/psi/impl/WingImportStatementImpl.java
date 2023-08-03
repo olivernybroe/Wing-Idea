@@ -26,16 +26,4 @@ public class WingImportStatementImpl extends WingElementImpl implements WingImpo
     else super.accept(visitor);
   }
 
-  @Override
-  @Nullable
-  public WingString getString() {
-    return findChildByClass(WingString.class);
-  }
-
-  @Override
-  @NotNull
-  public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
-  }
-
 }

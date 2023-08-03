@@ -7,10 +7,4 @@ import com.intellij.psi.PsiElement;
 
 public interface WingImportStatement extends WingElement {
 
-  @Nullable
-  WingString getString();
-
-  @NotNull
-  PsiElement getIdentifier();
-
 }
