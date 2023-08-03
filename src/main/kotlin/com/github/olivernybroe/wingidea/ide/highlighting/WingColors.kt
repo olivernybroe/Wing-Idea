@@ -23,4 +23,5 @@ object WingColors {
     val METHOD_DEFINITION_NAME = createTextAttributesKey("WING_METHOD_DEFINITION_NAME", DefaultLanguageHighlighterColors.INSTANCE_METHOD)
     val ENUM_FIELD = createTextAttributesKey("WING_ENUM_FIELD", DefaultLanguageHighlighterColors.STATIC_FIELD)
     val CLASS_FIELD = createTextAttributesKey("WING_CLASS_FIELD", DefaultLanguageHighlighterColors.INSTANCE_FIELD)
+    val SEMI_COLON = createTextAttributesKey("WING_SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON)
 }

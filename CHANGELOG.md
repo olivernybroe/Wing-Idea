@@ -12,6 +12,7 @@
 - Added `as` support on `new`
 - Added `in` support on `new`
 - Added `as` support on `bring`
+- Added coloring for semicolon
 
 ## [0.0.2] - 2023-07-27
 

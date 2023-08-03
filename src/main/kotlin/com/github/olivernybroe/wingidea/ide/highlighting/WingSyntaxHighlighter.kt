@@ -25,6 +25,7 @@ class WingSyntaxHighlighter: SyntaxHighlighterBase() {
             put(WingElementTypes.NUMBER, WingColors.NUMBER)
             put(WingElementTypes.COMMENT, WingColors.LINE_COMMENT)
             put(WingElementTypes.MULTI_LINE_COMMENT, WingColors.BLOCK_COMMENT)
+            put(WingElementTypes.SEMICOLON, WingColors.SEMI_COLON)
 
             fillMap(this, WING_KEYWORDS, WingColors.KEYWORD)
             fillMap(this, WING_BRACES, WingColors.BRACES)

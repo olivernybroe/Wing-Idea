@@ -56,6 +56,10 @@ class WingColorSettingsPage: ColorSettingsPage {
                 WingBundle.messagePointer("options.language.defaults.class.field"),
                 WingColors.CLASS_FIELD
             ),
+            AttributesDescriptor(
+                WingBundle.messagePointer("options.language.defaults.semicolon"),
+                WingColors.SEMI_COLON
+            ),
         )
 
         private val additionalDescriptors = emptyMap<String, TextAttributesKey>()

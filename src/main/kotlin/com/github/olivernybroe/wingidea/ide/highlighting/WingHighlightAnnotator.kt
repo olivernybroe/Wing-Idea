@@ -28,6 +28,18 @@ class WingHighlightAnnotator : Annotator {
             is WingMethodDefinition -> newAnnotation(holder, element, WingColors.METHOD_DEFINITION_NAME)
             is WingEnumField -> newAnnotation(holder, element, WingColors.ENUM_FIELD)
             is WingClassField -> newAnnotation(holder, element, WingColors.CLASS_FIELD)
+            is WingReferenceExpression -> {
+                // If element is a call on method or field `something.method()` or `something.field`
+                if (element.prevSibling is WingAccessor) {
+                    if (parent.parent is WingCallExpression) {
+                        newAnnotation(holder, element, WingColors.METHOD_DEFINITION_NAME)
+                    } else {
+                        newAnnotation(holder, element, WingColors.CLASS_FIELD)
+                    }
+                } else if (parent.parent is WingCallExpression) {
+                    newAnnotation(holder, element, WingColors.METHOD_DEFINITION_NAME)
+                }
+            }
         }
     }
 
