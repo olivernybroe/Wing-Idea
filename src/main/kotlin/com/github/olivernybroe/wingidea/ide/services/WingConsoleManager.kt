@@ -1,16 +1,28 @@
 package com.github.olivernybroe.wingidea.ide.services
 
+import com.github.olivernybroe.wingidea.WingIcons
 import com.github.olivernybroe.wingidea.ide.WingCommandLine
 import com.intellij.execution.process.OSProcessHandler
+import com.intellij.ide.projectView.PresentationData
+import com.intellij.navigation.ItemPresentation
+import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
+import com.intellij.pom.Navigatable
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
+import io.ktor.http.*
+import io.ktor.serialization.*
+import io.ktor.serialization.kotlinx.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.websocket.*
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
@@ -33,14 +45,24 @@ class WingConsoleManager(val project: Project): Disposable {
             json(Json {
                 prettyPrint = true
                 isLenient = true
+                encodeDefaults = true
+            })
+        }
+        install(WebSockets) {
+            pingInterval = 10_000
+            contentConverter = KotlinxWebsocketSerializationConverter(Json {
+                prettyPrint = true
+                isLenient = true
+                encodeDefaults = true
             })
         }
     }
+    private val bus = project.messageBus
 
     val isRunning: Boolean
         get() = processHandler?.isProcessTerminated == false
 
-    fun startForPath(path: String) {
+    suspend fun startForPath(path: String) {
         if (isRunning) {
             stop()
         }
@@ -49,6 +71,7 @@ class WingConsoleManager(val project: Project): Disposable {
 
         processHandler = OSProcessHandler(command)
         this.path = path
+        openWebSocket()
     }
 
     fun stop() {
@@ -67,6 +90,22 @@ class WingConsoleManager(val project: Project): Disposable {
             .data
     }
 
+    suspend fun openWebSocket() {
+        client.ws(host = "127.0.0.1", port = 3000, path = "/trpc") {
+            val publisher = bus.syncPublisher(WingConsoleListener.WING_CONSOLE_TOPIC)
+            sendSerialized(Subscription(params = Params(path = "app.invalidateQuery")))
+            while (true) {
+                val data = receiveDeserialized<InvalidateQueryResponse>()
+
+                if (data.result.type == InvalidateQueryResultType.DATA) {
+                    if (data.result.data === InvalidateQueryResultData.STATE) {
+                        publisher.onStateChanged()
+                    }
+                }
+            }
+        }
+    }
+
     // Websocket support -
     // ws://localhost:3000/trpc
     // { 	"id": 200, 	"method": "subscription", 	"params": { 		"path": "app.invalidateQuery" 	} }
@@ -77,10 +116,49 @@ class WingConsoleManager(val project: Project): Disposable {
         processHandler?.destroyProcess()
     }
 
+    // { 	"id": 200, 	"method": "subscription", 	"params": { 		"path": "app.invalidateQuery" 	} }
+    @Serializable
+    data class Subscription(
+        val id: Int = (0..1000).random(),
+        val method: String = "subscription",
+        val params: Params,
+    )
+
+    @Serializable
+    data class Params(
+        val path: String,
+    )
+
+    @Serializable
+    data class InvalidateQueryResponse(
+        val id: Int,
+        val result: InvalidateQueryResult,
+    )
+
+    @Serializable
+    data class InvalidateQueryResult(
+        val type: InvalidateQueryResultType,
+        val data: InvalidateQueryResultData? = null
+    )
+
+    @Serializable
+    enum class InvalidateQueryResultType {
+        @SerialName("started") STARTED,
+        @SerialName("data") DATA,
+    }
+
+    @Serializable
+    enum class InvalidateQueryResultData {
+        @SerialName("app.error") ERROR,
+        @SerialName("app.state") STATE,
+        @SerialName("app.logs") LOGS,
+    }
+
     @Serializable
     data class Response<T>(
         val result: Result<T>,
     )
+
 
     @Serializable
     data class Result<T>(
@@ -94,7 +172,20 @@ class WingConsoleManager(val project: Project): Disposable {
         val type: String,
         val childItems: List<WingResource>? = null,
         val display: ResourceDisplay? = null,
-    )
+    ): NavigationItem {
+        override fun toString() = this.label
+
+        override fun getName() = this.label
+
+        override fun getPresentation(): ItemPresentation {
+            return PresentationData(
+                this.label,
+                this.type,
+                WingIcons.FILE,
+                null
+            )
+        }
+    }
 
     @Serializable
     data class ResourceDisplay(

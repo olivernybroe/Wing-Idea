@@ -6,6 +6,7 @@ import com.intellij.openapi.Disposable
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent
 import com.intellij.openapi.fileEditor.FileEditorManagerListener
+import kotlinx.coroutines.runBlocking
 
 class WingFileChangedListener(private val consoleManager: WingConsoleManager): Disposable, FileEditorManagerListener {
     var editor: Editor? = null
@@ -24,6 +25,8 @@ class WingFileChangedListener(private val consoleManager: WingConsoleManager): D
             return
         }
 
-        consoleManager.startForPath(path)
+        runBlocking {
+            consoleManager.startForPath(path)
+        }
     }
 }

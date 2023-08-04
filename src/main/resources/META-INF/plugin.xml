@@ -11,7 +11,8 @@
     <resource-bundle>messages.WingBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
-        <toolWindow factoryClass="com.github.olivernybroe.wingidea.ide.toolWindow.WingToolWindowFactory" id="MyToolWindow"/>
+        <toolWindow factoryClass="com.github.olivernybroe.wingidea.ide.toolWindow.WingConsoleMapToolWindowFactory" id="Wing Console Map"/>
+        <toolWindow factoryClass="com.github.olivernybroe.wingidea.ide.toolWindow.WingConsoleExplorerToolWindowFactory" id="Wing Console Explorer"/>
         <!--suppress PluginXmlValidity -->
         <platform.lsp.serverSupportProvider
                 implementation="com.github.olivernybroe.wingidea.ide.lsp.WingLspServerSupportProvider"/>
