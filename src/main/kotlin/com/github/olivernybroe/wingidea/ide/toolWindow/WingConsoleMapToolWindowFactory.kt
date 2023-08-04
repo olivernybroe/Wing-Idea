@@ -12,6 +12,8 @@ import com.intellij.openapi.components.service
 import com.intellij.ui.jcef.JBCefBrowserBuilder
 
 
+private const val WING_CONSOLE_IDE_LAYOUT = 4
+
 /**
  * Defines the Graph view for Wing as a tool window.
  */
@@ -30,7 +32,7 @@ class WingConsoleMapToolWindowFactory : ToolWindowFactory {
 
     class WingConsoleMapView(toolWindow: ToolWindow) {
         private val consoleManager = toolWindow.project.service<WingConsoleManager>()
-        val browser = JBCefBrowserBuilder().setUrl("${consoleManager.host}:${consoleManager.port}").build()
+        val browser = JBCefBrowserBuilder().setUrl("${consoleManager.host}:${consoleManager.port}?layout=$WING_CONSOLE_IDE_LAYOUT").build()
 
         fun getContent() = browser.component
     }
