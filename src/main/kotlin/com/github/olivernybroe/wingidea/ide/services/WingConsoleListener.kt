@@ -11,5 +11,7 @@ interface WingConsoleListener {
     }
 
     suspend fun onStateChanged()
+
+    suspend fun onResourceFocusChanged(path: String)
 }
 

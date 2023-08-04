@@ -58,6 +58,10 @@ class WingConsoleExplorerToolWindowFactory : ToolWindowFactory {
                 treeModel.add(DefaultMutableTreeNode(it))
             }
         }
+
+        override suspend fun onResourceFocusChanged(path: String) {
+            TODO("Not yet implemented")
+        }
     }
 
     class RefreshResourcesAction(private val wingConsoleExplorerView: WingConsoleExplorerView): AnAction(AllIcons.Actions.Refresh) {

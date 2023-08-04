@@ -8,23 +8,23 @@ import com.intellij.navigation.ItemPresentation
 import com.intellij.navigation.NavigationItem
 import com.intellij.openapi.Disposable
 import com.intellij.openapi.components.Service
-import com.intellij.openapi.diagnostic.thisLogger
 import com.intellij.openapi.project.Project
-import com.intellij.pom.Navigatable
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.serialization.*
 import io.ktor.serialization.kotlinx.*
 import io.ktor.serialization.kotlinx.json.*
-import io.ktor.websocket.*
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 
 /**
  * Manages the Wing Console command.
@@ -54,6 +54,11 @@ class WingConsoleManager(val project: Project): Disposable {
                 prettyPrint = true
                 isLenient = true
                 encodeDefaults = true
+                serializersModule = SerializersModule {
+                    polymorphic(SubscriptionQueryResponse::class) {
+                        subclass(SubscriptionQueryResponse.serializer(PolymorphicSerializer(InvalidateQueryResultData::class)))
+                    }
+                }
             })
         }
     }
@@ -94,10 +99,11 @@ class WingConsoleManager(val project: Project): Disposable {
         client.ws(host = "127.0.0.1", port = 3000, path = "/trpc") {
             val publisher = bus.syncPublisher(WingConsoleListener.WING_CONSOLE_TOPIC)
             sendSerialized(Subscription(params = Params(path = "app.invalidateQuery")))
+            sendSerialized(Subscription(params = Params(path = "app.traces")))
             while (true) {
-                val data = receiveDeserialized<InvalidateQueryResponse>()
+                val data = receiveDeserialized<SubscriptionQueryResponse<InvalidateQueryResultData>>()
 
-                if (data.result.type == InvalidateQueryResultType.DATA) {
+                if (data.result.type == SubscriptionQueryResultType.DATA) {
                     if (data.result.data === InvalidateQueryResultData.STATE) {
                         publisher.onStateChanged()
                     }
@@ -130,19 +136,21 @@ class WingConsoleManager(val project: Project): Disposable {
     )
 
     @Serializable
-    data class InvalidateQueryResponse(
+    data class SubscriptionQueryResponse<T>(
         val id: Int,
-        val result: InvalidateQueryResult,
+        val result: SubscriptionQueryResult<T>,
     )
 
     @Serializable
-    data class InvalidateQueryResult(
-        val type: InvalidateQueryResultType,
-        val data: InvalidateQueryResultData? = null
+    data class SubscriptionQueryResult<T>(
+        val type: SubscriptionQueryResultType,
+        @Contextual()
+        val data: T? = null
+        // ▼ {"id":200,"result":{"type":"data","data":{"data":{"message":"List (prefix=null).","status":"success","result":"[]"},"type":"resource","sourcePath":"root/Default/cloud.Bucket","sourceType":"wingsdk.cloud.Bucket","timestamp":"2023-08-04T12:21:48.773Z"}}}
     )
 
     @Serializable
-    enum class InvalidateQueryResultType {
+    enum class SubscriptionQueryResultType {
         @SerialName("started") STARTED,
         @SerialName("data") DATA,
     }
