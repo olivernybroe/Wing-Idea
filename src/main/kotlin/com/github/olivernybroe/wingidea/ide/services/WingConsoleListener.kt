@@ -10,8 +10,8 @@ interface WingConsoleListener {
         )
     }
 
-    suspend fun onStateChanged()
+    fun onStateChanged()
 
-    suspend fun onResourceFocusChanged(path: String)
+    fun onResourceFocusChanged()
 }
 

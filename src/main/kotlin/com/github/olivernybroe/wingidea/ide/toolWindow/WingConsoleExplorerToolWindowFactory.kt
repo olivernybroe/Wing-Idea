@@ -15,6 +15,7 @@ import com.intellij.openapi.components.service
 import com.intellij.ui.components.JBTreeTable
 import com.intellij.ui.jcef.JBCefBrowserBuilder
 import com.intellij.ui.treeStructure.Tree
+import com.intellij.util.ui.tree.TreeUtil
 import io.ktor.serialization.*
 import io.ktor.serialization.kotlinx.*
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +24,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
 import javax.swing.JButton
+import javax.swing.event.TreeSelectionEvent
+import javax.swing.event.TreeSelectionListener
 import javax.swing.tree.DefaultMutableTreeNode
+import javax.swing.tree.DefaultTreeModel
+import javax.swing.tree.TreeSelectionModel
 
 
 /**
@@ -37,38 +42,63 @@ class WingConsoleExplorerToolWindowFactory : ToolWindowFactory {
         val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false)
         toolWindow.contentManager.addContent(content)
         toolWindow.setTitleActions(listOf(
-            RefreshResourcesAction(myToolWindow)
+            RefreshResourcesAction(project.messageBus.syncPublisher(WingConsoleListener.WING_CONSOLE_TOPIC))
         ))
     }
 
     override fun shouldBeAvailable(project: Project) = true
 
-    class WingConsoleExplorerView(toolWindow: ToolWindow): WingConsoleListener {
+    class WingConsoleExplorerView(toolWindow: ToolWindow): WingConsoleListener, TreeSelectionListener {
         private val consoleManager = toolWindow.project.service<WingConsoleManager>()
-        private val treeModel = DefaultMutableTreeNode("root")
-
-        fun getContent() = Tree(treeModel)
-
-        override suspend fun onStateChanged() {
-            treeModel.removeAllChildren()
-            val resources = consoleManager.getResources()
-            treeModel.userObject = resources
-
-            consoleManager.getResources().childItems?.forEach {
-                treeModel.add(DefaultMutableTreeNode(it))
-            }
+        private val rootNode = DefaultMutableTreeNode("root")
+        private val treeModel = DefaultTreeModel(rootNode)
+        private val tree = Tree(treeModel).also {
+            it.selectionModel.selectionMode = TreeSelectionModel.SINGLE_TREE_SELECTION
+            it.selectionModel.addTreeSelectionListener(this)
         }
 
-        override suspend fun onResourceFocusChanged(path: String) {
-            TODO("Not yet implemented")
+        fun getContent() = tree
+
+        override fun onStateChanged() {
+            rootNode.removeAllChildren()
+            val resources = runBlocking { consoleManager.getResources() }
+            rootNode.userObject = resources
+
+            resources.childItems?.forEach {
+                rootNode.add(DefaultMutableTreeNode(it))
+            }
+            treeModel.nodeStructureChanged(rootNode)
+        }
+
+        override fun onResourceFocusChanged() {
+            val path = runBlocking { consoleManager.getSelectedNode() }
+
+            // Find a node where the userObject id is equal to the path
+            val selectedNode = rootNode.children().toList().firstOrNull {
+                if (it !is DefaultMutableTreeNode) {
+                    return@firstOrNull false
+                }
+                val userObject = it.userObject
+                if (userObject !is WingConsoleManager.WingResource) {
+                    return@firstOrNull false
+                }
+
+                userObject.id == path
+            } ?: return
+
+            tree.selectionModel.selectionPath = TreeUtil.getPath(rootNode, selectedNode)
+            tree.repaint()
+        }
+
+        override fun valueChanged(event: TreeSelectionEvent) {
+            val nodes = tree.getSelectedNodes(DefaultMutableTreeNode::class.java, null)
+            // TODO: send request to console about the selected node
         }
     }
 
-    class RefreshResourcesAction(private val wingConsoleExplorerView: WingConsoleExplorerView): AnAction(AllIcons.Actions.Refresh) {
+    class RefreshResourcesAction(private val listener: WingConsoleListener): AnAction(AllIcons.Actions.Refresh) {
         override fun actionPerformed(event: AnActionEvent) {
-            CoroutineScope(Dispatchers.Default).launch {
-                wingConsoleExplorerView.onStateChanged()
-            }
+            listener.onStateChanged()
         }
     }
 }

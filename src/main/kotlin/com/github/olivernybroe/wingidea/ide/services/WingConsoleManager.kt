@@ -19,14 +19,14 @@ import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
 import io.ktor.serialization.kotlinx.*
 import io.ktor.serialization.kotlinx.json.*
+import kotlinx.coroutines.delay
 import kotlinx.serialization.Contextual
-import kotlinx.serialization.PolymorphicSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.polymorphic
-import kotlinx.serialization.modules.subclass
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 
 /**
  * Manages the Wing Console command.
@@ -42,26 +42,19 @@ class WingConsoleManager(val project: Project): Disposable {
     var port: Int? = 3000
     var host: String? = "localhost"
     var processHandler: OSProcessHandler? = null
+    private val json = Json {
+        prettyPrint = true
+        isLenient = true
+        encodeDefaults = true
+        ignoreUnknownKeys = true
+    }
     private val client = HttpClient(CIO) {
         install(ContentNegotiation) {
-            json(Json {
-                prettyPrint = true
-                isLenient = true
-                encodeDefaults = true
-            })
+            json(json)
         }
         install(WebSockets) {
             pingInterval = 10_000
-            contentConverter = KotlinxWebsocketSerializationConverter(Json {
-                prettyPrint = true
-                isLenient = true
-                encodeDefaults = true
-                serializersModule = SerializersModule {
-                    polymorphic(SubscriptionQueryResponse::class) {
-                        subclass(SubscriptionQueryResponse.serializer(PolymorphicSerializer(InvalidateQueryResultData::class)))
-                    }
-                }
-            })
+            contentConverter = KotlinxWebsocketSerializationConverter(json)
         }
     }
     private val bus = project.messageBus
@@ -74,6 +67,8 @@ class WingConsoleManager(val project: Project): Disposable {
         processHandler = KillableProcessHandler(command)
         processHandler?.startNotify()
         this.path = path
+        // wait 2 seconds for the server to start
+        delay(2000)
         openWebSocket()
     }
 
@@ -84,7 +79,14 @@ class WingConsoleManager(val project: Project): Disposable {
 
     suspend fun getResources(): WingResource {
         return client.get("http://localhost:3000/trpc/app.explorerTree")
-            .body<Response<WingResource>>()
+            .body<WingResponse<WingResource>>()
+            .result
+            .data
+    }
+
+    suspend fun getSelectedNode(): String {
+        return client.get("http://localhost:3000/trpc/app.selectedNode")
+            .body<WingResponse<String>>()
             .result
             .data
     }
@@ -95,11 +97,20 @@ class WingConsoleManager(val project: Project): Disposable {
             sendSerialized(Subscription(params = Params(path = "app.invalidateQuery")))
             sendSerialized(Subscription(params = Params(path = "app.traces")))
             while (true) {
-                val data = receiveDeserialized<SubscriptionQueryResponse<InvalidateQueryResultData>>()
+                val response = receiveDeserialized<SubscriptionQueryResponse<JsonElement>>()
 
-                if (data.result.type == SubscriptionQueryResultType.DATA) {
-                    if (data.result.data === InvalidateQueryResultData.STATE) {
-                        publisher.onStateChanged()
+                if (response.result.type == SubscriptionQueryResultType.DATA) {
+                    val data = response.result.data
+                    if (data is JsonPrimitive) {
+                        val result = json.decodeFromString<InvalidateQueryResultData>(data.toString())
+
+                        if (result == InvalidateQueryResultData.STATE) {
+                            publisher.onStateChanged()
+                        }
+                    } else if (data is JsonObject) {
+                        val result = json.decodeFromString<WingTrace>(data.toString())
+
+                        publisher.onResourceFocusChanged()
                     }
                 }
             }
@@ -109,7 +120,7 @@ class WingConsoleManager(val project: Project): Disposable {
     // Websocket support -
     // ws://localhost:3000/trpc
     // { 	"id": 200, 	"method": "subscription", 	"params": { 		"path": "app.invalidateQuery" 	} }
-    // For all trcpc calls https://github.com/winglang/wing/blob/03d68be294d2dd60bed854a52a6ec30ebcbe62ed/apps/wing-console/console/server/src/router/app.ts#L52
+    // For all trpc calls https://github.com/winglang/wing/blob/03d68be294d2dd60bed854a52a6ec30ebcbe62ed/apps/wing-console/console/server/src/router/app.ts#L52
 
 
     override fun dispose() {
@@ -157,14 +168,22 @@ class WingConsoleManager(val project: Project): Disposable {
     }
 
     @Serializable
-    data class Response<T>(
-        val result: Result<T>,
+    data class WingResponse<T>(
+        val result: WingResult<T>,
     )
 
 
     @Serializable
-    data class Result<T>(
+    data class WingResult<T>(
         val data: T,
+    )
+
+    @Serializable
+    data class WingTrace(
+        val type: String,
+        val sourcePath: String,
+        val sourceType: String,
+        val timestamp: String
     )
 
     @Serializable
