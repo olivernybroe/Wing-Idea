@@ -46,9 +46,12 @@
                              implementationClass="com.github.olivernybroe.wingidea.ide.folding.WingBlockFoldingBuilder"/>
         <lang.foldingBuilder language="Wing"
                              implementationClass="com.github.olivernybroe.wingidea.ide.folding.WingImportFoldingBuilder"/>
-        <backgroundPostStartupActivity
-                implementation="com.github.olivernybroe.wingidea.ide.WingFileChangedStartupActivity"/>
     </extensions>
+
+    <projectListeners>
+        <listener topic="com.intellij.openapi.fileEditor.FileEditorManagerListener"
+                  class="com.github.olivernybroe.wingidea.ide.WingFileChangedListener"/>
+    </projectListeners>
 
     <actions>
         <action id="Wing.AddWingConnection" class="com.github.olivernybroe.wingidea.ide.servicesWindow.AddWingConnectionAction" text="Wing Connection">

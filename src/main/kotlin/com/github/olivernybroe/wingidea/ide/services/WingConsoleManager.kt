@@ -2,6 +2,8 @@ package com.github.olivernybroe.wingidea.ide.services
 
 import com.github.olivernybroe.wingidea.WingIcons
 import com.github.olivernybroe.wingidea.ide.WingCommandLine
+import com.intellij.execution.impl.ExecutionManagerImpl
+import com.intellij.execution.process.KillableProcessHandler
 import com.intellij.execution.process.OSProcessHandler
 import com.intellij.ide.projectView.PresentationData
 import com.intellij.navigation.ItemPresentation
@@ -64,28 +66,20 @@ class WingConsoleManager(val project: Project): Disposable {
     }
     private val bus = project.messageBus
 
-    val isRunning: Boolean
-        get() = processHandler?.isProcessTerminated == false
-
     suspend fun startForPath(path: String) {
-        if (isRunning) {
-            stop()
-        }
+        stop()
 
         val command = WingCommandLine.createConsole(project)
 
-        processHandler = OSProcessHandler(command)
+        processHandler = KillableProcessHandler(command)
+        processHandler?.startNotify()
         this.path = path
         openWebSocket()
     }
 
     fun stop() {
-        processHandler?.destroyProcess()
+        ExecutionManagerImpl.stopProcess(processHandler)
         processHandler = null
-    }
-
-    fun isRunningForPath(path: String): Boolean {
-        return this.path == path && isRunning
     }
 
     suspend fun getResources(): WingResource {
@@ -119,7 +113,7 @@ class WingConsoleManager(val project: Project): Disposable {
 
 
     override fun dispose() {
-        processHandler?.destroyProcess()
+        ExecutionManagerImpl.stopProcess(processHandler)
     }
 
     // { 	"id": 200, 	"method": "subscription", 	"params": { 		"path": "app.invalidateQuery" 	} }
