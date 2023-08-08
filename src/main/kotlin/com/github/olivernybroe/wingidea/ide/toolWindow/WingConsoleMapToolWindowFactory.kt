@@ -1,5 +1,6 @@
 package com.github.olivernybroe.wingidea.ide.toolWindow
 
+import com.github.olivernybroe.wingidea.ide.services.WingConsoleListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
@@ -20,21 +21,29 @@ private const val WING_CONSOLE_IDE_LAYOUT = 4
 class WingConsoleMapToolWindowFactory : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val myToolWindow = WingConsoleMapView(toolWindow)
-        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false)
+        val wingConsoleMapView = WingConsoleMapView(toolWindow)
+        project.messageBus.connect().subscribe(WingConsoleListener.WING_CONSOLE_TOPIC, wingConsoleMapView)
+        val content = ContentFactory.getInstance().createContent(wingConsoleMapView.getContent(), null, false)
         toolWindow.contentManager.addContent(content)
         toolWindow.setTitleActions(listOf(
-            RefreshWingBrowserAction(myToolWindow)
+            RefreshWingBrowserAction(wingConsoleMapView)
         ))
     }
 
     override fun shouldBeAvailable(project: Project) = true
 
-    class WingConsoleMapView(toolWindow: ToolWindow) {
+    class WingConsoleMapView(toolWindow: ToolWindow): WingConsoleListener {
         private val consoleManager = toolWindow.project.service<WingConsoleManager>()
-        val browser = JBCefBrowserBuilder().setUrl("${consoleManager.host}:${consoleManager.port}?layout=$WING_CONSOLE_IDE_LAYOUT").build()
+        val browser = JBCefBrowserBuilder().setUrl(createUrl()).build()
 
         fun getContent() = browser.component
+
+        private fun createUrl() = "${consoleManager.host}:${consoleManager.port}?layout=$WING_CONSOLE_IDE_LAYOUT"
+
+        override fun onConnectionChanged() {
+            browser.loadURL(createUrl())
+            browser.cefBrowser.reload()
+        }
     }
 
     class RefreshWingBrowserAction(private val wingConsoleMapView: WingConsoleMapView): AnAction(AllIcons.Actions.Refresh) {

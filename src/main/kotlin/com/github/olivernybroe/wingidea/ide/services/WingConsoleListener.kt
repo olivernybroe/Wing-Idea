@@ -10,8 +10,16 @@ interface WingConsoleListener {
         )
     }
 
-    fun onStateChanged()
+    fun onStateChanged() {
 
-    fun onResourceFocusChanged()
+    }
+
+    fun onResourceFocusChanged() {
+
+    }
+
+    fun onConnectionChanged() {
+
+    }
 }
 

@@ -79,6 +79,11 @@ class WingConsoleExplorerToolWindowFactory : ToolWindowFactory {
             tree.repaint()
         }
 
+        override fun onConnectionChanged() {
+            onResourceFocusChanged()
+            onStateChanged()
+        }
+
         /**
          * When the user selects an item in the tree, we want to select the same item in the Wing console.
          */

@@ -71,8 +71,7 @@ class WingConsoleManager(val project: Project): Disposable {
         // wait 2 seconds for the server to start
         delay(2000)
         val publisher = bus.syncPublisher(WingConsoleListener.WING_CONSOLE_TOPIC)
-        publisher.onStateChanged()
-        publisher.onResourceFocusChanged()
+        publisher.onConnectionChanged()
         openWebSocket(publisher)
     }
 
