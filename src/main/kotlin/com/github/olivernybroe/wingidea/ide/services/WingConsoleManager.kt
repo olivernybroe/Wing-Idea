@@ -17,6 +17,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.websocket.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import io.ktor.serialization.kotlinx.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.delay
@@ -69,7 +70,10 @@ class WingConsoleManager(val project: Project): Disposable {
         this.path = path
         // wait 2 seconds for the server to start
         delay(2000)
-        openWebSocket()
+        val publisher = bus.syncPublisher(WingConsoleListener.WING_CONSOLE_TOPIC)
+        publisher.onStateChanged()
+        publisher.onResourceFocusChanged()
+        openWebSocket(publisher)
     }
 
     fun stop() {
@@ -91,9 +95,15 @@ class WingConsoleManager(val project: Project): Disposable {
             .data
     }
 
-    suspend fun openWebSocket() {
+    suspend fun selectNode(resourcePath: String) {
+        client.post("http://localhost:3000/trpc/app.selectNode") {
+            setBody(WingSelectNodeRequest(resourcePath))
+            contentType(ContentType.Application.Json)
+        }
+    }
+
+    private suspend fun openWebSocket(publisher: WingConsoleListener) {
         client.ws(host = "127.0.0.1", port = 3000, path = "/trpc") {
-            val publisher = bus.syncPublisher(WingConsoleListener.WING_CONSOLE_TOPIC)
             sendSerialized(Subscription(params = Params(path = "app.invalidateQuery")))
             sendSerialized(Subscription(params = Params(path = "app.traces")))
             while (true) {
@@ -108,7 +118,7 @@ class WingConsoleManager(val project: Project): Disposable {
                             publisher.onStateChanged()
                         }
                     } else if (data is JsonObject) {
-                        val result = json.decodeFromString<WingTrace>(data.toString())
+                        json.decodeFromString<WingTrace>(data.toString())
 
                         publisher.onResourceFocusChanged()
                     }
@@ -213,4 +223,7 @@ class WingConsoleManager(val project: Project): Disposable {
         val title: String,
         val description: String,
     )
+
+    @Serializable
+    data class WingSelectNodeRequest(val resourcePath: String)
 }

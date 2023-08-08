@@ -13,6 +13,7 @@
 - Added `in` support on `new`
 - Added `as` support on `bring`
 - Added coloring for semicolon
+- Added support for explorer window
 
 ## [0.0.2] - 2023-07-27
 

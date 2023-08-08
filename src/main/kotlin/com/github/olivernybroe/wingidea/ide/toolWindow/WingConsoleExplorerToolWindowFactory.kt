@@ -4,26 +4,15 @@ import com.github.olivernybroe.wingidea.ide.services.WingConsoleListener
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
-import com.intellij.ui.components.JBPanel
 import com.intellij.ui.content.ContentFactory
 import com.github.olivernybroe.wingidea.ide.services.WingConsoleManager
 import com.intellij.icons.AllIcons
-import com.intellij.icons.AllIcons.Icons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.components.service
-import com.intellij.ui.components.JBTreeTable
-import com.intellij.ui.jcef.JBCefBrowserBuilder
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.ui.tree.TreeUtil
-import io.ktor.serialization.*
-import io.ktor.serialization.kotlinx.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
-import javax.swing.JButton
 import javax.swing.event.TreeSelectionEvent
 import javax.swing.event.TreeSelectionListener
 import javax.swing.tree.DefaultMutableTreeNode
@@ -37,9 +26,9 @@ import javax.swing.tree.TreeSelectionModel
 class WingConsoleExplorerToolWindowFactory : ToolWindowFactory {
 
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
-        val myToolWindow = WingConsoleExplorerView(toolWindow)
-        project.messageBus.connect().subscribe(WingConsoleListener.WING_CONSOLE_TOPIC, myToolWindow)
-        val content = ContentFactory.getInstance().createContent(myToolWindow.getContent(), null, false)
+        val consoleExplorerView = WingConsoleExplorerView(toolWindow)
+        project.messageBus.connect().subscribe(WingConsoleListener.WING_CONSOLE_TOPIC, consoleExplorerView)
+        val content = ContentFactory.getInstance().createContent(consoleExplorerView.getContent(), null, false)
         toolWindow.contentManager.addContent(content)
         toolWindow.setTitleActions(listOf(
             RefreshResourcesAction(project.messageBus.syncPublisher(WingConsoleListener.WING_CONSOLE_TOPIC))
@@ -90,9 +79,26 @@ class WingConsoleExplorerToolWindowFactory : ToolWindowFactory {
             tree.repaint()
         }
 
+        /**
+         * When the user selects an item in the tree, we want to select the same item in the Wing console.
+         */
         override fun valueChanged(event: TreeSelectionEvent) {
             val nodes = tree.getSelectedNodes(DefaultMutableTreeNode::class.java, null)
-            // TODO: send request to console about the selected node
+
+            if (nodes.size != 1) {
+                return
+            }
+
+            val node = nodes[0]
+            if (node !is DefaultMutableTreeNode) {
+                return
+            }
+            val userObject = node.userObject
+            if (userObject !is WingConsoleManager.WingResource) {
+                return
+            }
+
+            runBlocking { consoleManager.selectNode(userObject.id) }
         }
     }
 
