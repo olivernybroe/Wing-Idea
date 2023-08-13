@@ -3,8 +3,10 @@ package com.github.olivernybroe.wingidea.ide.lsp
 import com.github.olivernybroe.wingidea.WingIcons
 import com.github.olivernybroe.wingidea.ide.WingCommandLine
 import com.github.olivernybroe.wingidea.isWingFile
+import com.intellij.codeInsight.completion.CompletionParameters
 import com.intellij.codeInsight.completion.InsertHandler
 import com.intellij.codeInsight.lookup.LookupElement
+import com.intellij.codeInsight.lookup.LookupElementBuilder
 import com.intellij.openapi.editor.EditorModificationUtil
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.vfs.VirtualFile
@@ -31,15 +33,17 @@ private class WingLspServerDescriptor(project: Project) : ProjectWideLspServerDe
     override val lspCompletionSupport: LspCompletionSupport
         get() = object : LspCompletionSupport() {
             override fun getIcon(item: CompletionItem): Icon {
-                return WingIcons.FILE
+                return super.getIcon(item) ?: WingIcons.FILE
             }
 
-            override fun getInsertHandler(item: CompletionItem): InsertHandler<LookupElement>? {
+            override fun createLookupElement(parameters: CompletionParameters, item: CompletionItem): LookupElement? {
+                val lookupElement = super.createLookupElement(parameters, item) as LookupElementBuilder
+
                 val insertText = item.insertText
 
                 // Handle function/method caret location for arguments.
                 if (insertText?.contains("$") == true) {
-                    return InsertHandler { context, _ ->
+                    return lookupElement.withInsertHandler { context, _ ->
                         context.document.replaceString(
                             context.startOffset,
                             context.tailOffset,
@@ -51,7 +55,7 @@ private class WingLspServerDescriptor(project: Project) : ProjectWideLspServerDe
 
                 }
 
-                return super.getInsertHandler(item)
+                return lookupElement
             }
         }
 }
