@@ -143,6 +143,7 @@ Expression ::=
     BinaryExpression
     | UnaryExpression
     | NewExpression
+    | StructLiteralExpression
     | JsonLiteralExpression
     | LiteralExpression
     | ReferenceExpression
@@ -157,7 +158,6 @@ Expression ::=
     | DeferExpression
     | CollectionLiteralExpression
     | ParenthesizedExpression
-    | StructLiteralExpression
     | OptionalTestExpression
 
 MathematicalOperators ::=

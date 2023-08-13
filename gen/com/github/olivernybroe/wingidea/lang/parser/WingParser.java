@@ -2317,7 +2317,7 @@ public class WingParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "VariableAssignmentStatement_1")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Expression(b, l + 1, 8);
+    r = Expression(b, l + 1, 9);
     r = r && consumeToken(b, ASSIGNMENT);
     r = r && Expression(b, l + 1, -1);
     r = r && consumeToken(b, SEMICOLON);
@@ -2330,7 +2330,7 @@ public class WingParser implements PsiParser, LightPsiParser {
     if (!recursion_guard_(b, l, "VariableAssignmentStatement_2")) return false;
     boolean r;
     Marker m = enter_section_(b);
-    r = Expression(b, l + 1, 5);
+    r = Expression(b, l + 1, 6);
     r = r && consumeToken(b, ASSIGNMENT);
     r = r && Expression(b, l + 1, -1);
     r = r && consumeToken(b, SEMICOLON);
@@ -2403,21 +2403,21 @@ public class WingParser implements PsiParser, LightPsiParser {
   // 0: BINARY(BinaryExpression)
   // 1: PREFIX(UnaryExpression)
   // 2: ATOM(NewExpression)
-  // 3: ATOM(JsonLiteralExpression)
-  // 4: ATOM(LiteralExpression)
-  // 5: ATOM(ReferenceExpression)
-  // 6: POSTFIX(NestedIdentifierExpression)
-  // 7: ATOM(NestedIdentifierJsonExpression)
-  // 8: POSTFIX(CallExpression)
-  // 9: BINARY(StructuredAccessExpression)
-  // 10: ATOM(SuperCallExpression)
-  // 11: ATOM(PreflightClosureExpression)
-  // 12: ATOM(InflightClosureExpression)
-  // 13: PREFIX(AwaitExpression)
-  // 14: PREFIX(DeferExpression)
-  // 15: ATOM(CollectionLiteralExpression)
-  // 16: PREFIX(ParenthesizedExpression)
-  // 17: ATOM(StructLiteralExpression)
+  // 3: ATOM(StructLiteralExpression)
+  // 4: ATOM(JsonLiteralExpression)
+  // 5: ATOM(LiteralExpression)
+  // 6: ATOM(ReferenceExpression)
+  // 7: POSTFIX(NestedIdentifierExpression)
+  // 8: ATOM(NestedIdentifierJsonExpression)
+  // 9: POSTFIX(CallExpression)
+  // 10: BINARY(StructuredAccessExpression)
+  // 11: ATOM(SuperCallExpression)
+  // 12: ATOM(PreflightClosureExpression)
+  // 13: ATOM(InflightClosureExpression)
+  // 14: PREFIX(AwaitExpression)
+  // 15: PREFIX(DeferExpression)
+  // 16: ATOM(CollectionLiteralExpression)
+  // 17: PREFIX(ParenthesizedExpression)
   // 18: POSTFIX(OptionalTestExpression)
   public static boolean Expression(PsiBuilder b, int l, int g) {
     if (!recursion_guard_(b, l, "Expression")) return false;
@@ -2426,6 +2426,7 @@ public class WingParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, "<expression>");
     r = UnaryExpression(b, l + 1);
     if (!r) r = NewExpression(b, l + 1);
+    if (!r) r = StructLiteralExpression(b, l + 1);
     if (!r) r = JsonLiteralExpression(b, l + 1);
     if (!r) r = LiteralExpression(b, l + 1);
     if (!r) r = ReferenceExpression(b, l + 1);
@@ -2437,7 +2438,6 @@ public class WingParser implements PsiParser, LightPsiParser {
     if (!r) r = DeferExpression(b, l + 1);
     if (!r) r = CollectionLiteralExpression(b, l + 1);
     if (!r) r = ParenthesizedExpression(b, l + 1);
-    if (!r) r = StructLiteralExpression(b, l + 1);
     p = r;
     r = r && Expression_0(b, l + 1, g);
     exit_section_(b, l, m, null, r, p, null);
@@ -2453,16 +2453,16 @@ public class WingParser implements PsiParser, LightPsiParser {
         r = Expression(b, l, 0);
         exit_section_(b, l, m, BINARY_EXPRESSION, r, true, null);
       }
-      else if (g < 6 && NestedIdentifierExpression_0(b, l + 1)) {
+      else if (g < 7 && NestedIdentifierExpression_0(b, l + 1)) {
         r = true;
         exit_section_(b, l, m, NESTED_IDENTIFIER_EXPRESSION, r, true, null);
       }
-      else if (g < 8 && ArgumentList(b, l + 1)) {
+      else if (g < 9 && ArgumentList(b, l + 1)) {
         r = true;
         exit_section_(b, l, m, CALL_EXPRESSION, r, true, null);
       }
-      else if (g < 9 && consumeTokenSmart(b, LEFT_SQUARE_BRACE)) {
-        r = report_error_(b, Expression(b, l, 9));
+      else if (g < 10 && consumeTokenSmart(b, LEFT_SQUARE_BRACE)) {
+        r = report_error_(b, Expression(b, l, 10));
         r = consumeToken(b, RIGHT_SQUARE_BRACE) && r;
         exit_section_(b, l, m, STRUCTURED_ACCESS_EXPRESSION, r, true, null);
       }
@@ -2548,6 +2548,62 @@ public class WingParser implements PsiParser, LightPsiParser {
     r = r && Expression(b, l + 1, -1);
     exit_section_(b, m, null, r);
     return r;
+  }
+
+  // CustomType LEFT_CURLY_BRACE StructLiteralMember* (COMMA StructLiteralMember)* COMMA? RIGHT_CURLY_BRACE
+  public static boolean StructLiteralExpression(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructLiteralExpression")) return false;
+    if (!nextTokenIsSmart(b, IDENTIFIER)) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = CustomType(b, l + 1);
+    r = r && consumeToken(b, LEFT_CURLY_BRACE);
+    r = r && StructLiteralExpression_2(b, l + 1);
+    r = r && StructLiteralExpression_3(b, l + 1);
+    r = r && StructLiteralExpression_4(b, l + 1);
+    r = r && consumeToken(b, RIGHT_CURLY_BRACE);
+    exit_section_(b, m, STRUCT_LITERAL_EXPRESSION, r);
+    return r;
+  }
+
+  // StructLiteralMember*
+  private static boolean StructLiteralExpression_2(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructLiteralExpression_2")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!StructLiteralMember(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "StructLiteralExpression_2", c)) break;
+    }
+    return true;
+  }
+
+  // (COMMA StructLiteralMember)*
+  private static boolean StructLiteralExpression_3(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructLiteralExpression_3")) return false;
+    while (true) {
+      int c = current_position_(b);
+      if (!StructLiteralExpression_3_0(b, l + 1)) break;
+      if (!empty_element_parsed_guard_(b, "StructLiteralExpression_3", c)) break;
+    }
+    return true;
+  }
+
+  // COMMA StructLiteralMember
+  private static boolean StructLiteralExpression_3_0(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructLiteralExpression_3_0")) return false;
+    boolean r;
+    Marker m = enter_section_(b);
+    r = consumeTokenSmart(b, COMMA);
+    r = r && StructLiteralMember(b, l + 1);
+    exit_section_(b, m, null, r);
+    return r;
+  }
+
+  // COMMA?
+  private static boolean StructLiteralExpression_4(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "StructLiteralExpression_4")) return false;
+    consumeTokenSmart(b, COMMA);
+    return true;
   }
 
   // JsonContainerType Expression
@@ -2736,7 +2792,7 @@ public class WingParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, null);
     r = consumeTokenSmart(b, AWAIT);
     p = r;
-    r = p && Expression(b, l, 13);
+    r = p && Expression(b, l, 14);
     exit_section_(b, l, m, AWAIT_EXPRESSION, r, p, null);
     return r || p;
   }
@@ -2748,7 +2804,7 @@ public class WingParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, null);
     r = consumeTokenSmart(b, DEFER);
     p = r;
-    r = p && Expression(b, l, 14);
+    r = p && Expression(b, l, 15);
     exit_section_(b, l, m, DEFER_EXPRESSION, r, p, null);
     return r || p;
   }
@@ -2774,66 +2830,10 @@ public class WingParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, null);
     r = consumeTokenSmart(b, LEFT_PARENTHESIS);
     p = r;
-    r = p && Expression(b, l, 16);
+    r = p && Expression(b, l, 17);
     r = p && report_error_(b, consumeToken(b, RIGHT_PARENTHESIS)) && r;
     exit_section_(b, l, m, PARENTHESIZED_EXPRESSION, r, p, null);
     return r || p;
-  }
-
-  // CustomType LEFT_CURLY_BRACE StructLiteralMember* (COMMA StructLiteralMember)* COMMA? RIGHT_CURLY_BRACE
-  public static boolean StructLiteralExpression(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StructLiteralExpression")) return false;
-    if (!nextTokenIsSmart(b, IDENTIFIER)) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = CustomType(b, l + 1);
-    r = r && consumeToken(b, LEFT_CURLY_BRACE);
-    r = r && StructLiteralExpression_2(b, l + 1);
-    r = r && StructLiteralExpression_3(b, l + 1);
-    r = r && StructLiteralExpression_4(b, l + 1);
-    r = r && consumeToken(b, RIGHT_CURLY_BRACE);
-    exit_section_(b, m, STRUCT_LITERAL_EXPRESSION, r);
-    return r;
-  }
-
-  // StructLiteralMember*
-  private static boolean StructLiteralExpression_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StructLiteralExpression_2")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!StructLiteralMember(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "StructLiteralExpression_2", c)) break;
-    }
-    return true;
-  }
-
-  // (COMMA StructLiteralMember)*
-  private static boolean StructLiteralExpression_3(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StructLiteralExpression_3")) return false;
-    while (true) {
-      int c = current_position_(b);
-      if (!StructLiteralExpression_3_0(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "StructLiteralExpression_3", c)) break;
-    }
-    return true;
-  }
-
-  // COMMA StructLiteralMember
-  private static boolean StructLiteralExpression_3_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StructLiteralExpression_3_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = consumeTokenSmart(b, COMMA);
-    r = r && StructLiteralMember(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // COMMA?
-  private static boolean StructLiteralExpression_4(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "StructLiteralExpression_4")) return false;
-    consumeTokenSmart(b, COMMA);
-    return true;
   }
 
 }
