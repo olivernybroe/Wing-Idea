@@ -9,8 +9,10 @@ import com.github.olivernybroe.wingidea.ide.services.WingConsoleManager
 import com.intellij.icons.AllIcons
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
+import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.components.service
 import com.intellij.ui.jcef.JBCefBrowserBuilder
+import kotlinx.coroutines.runBlocking
 
 
 private const val WING_CONSOLE_IDE_LAYOUT = 4
@@ -26,7 +28,9 @@ class WingConsoleMapToolWindowFactory : ToolWindowFactory {
         val content = ContentFactory.getInstance().createContent(wingConsoleMapView.getContent(), null, false)
         toolWindow.contentManager.addContent(content)
         toolWindow.setTitleActions(listOf(
-            RefreshWingBrowserAction(wingConsoleMapView)
+            RefreshWingBrowserAction(wingConsoleMapView),
+            StopWingConsoleAction(project),
+            StartWingConsoleAction(project)
         ))
     }
 
@@ -49,6 +53,24 @@ class WingConsoleMapToolWindowFactory : ToolWindowFactory {
     class RefreshWingBrowserAction(private val wingConsoleMapView: WingConsoleMapView): AnAction(AllIcons.Actions.Refresh) {
         override fun actionPerformed(event: AnActionEvent) {
             wingConsoleMapView.browser.cefBrowser.reload()
+        }
+    }
+
+    class StopWingConsoleAction(project: Project): AnAction(AllIcons.Actions.Run_anything) {
+        private val consoleManager = project.service<WingConsoleManager>()
+        override fun actionPerformed(event: AnActionEvent) {
+            consoleManager.stop()
+        }
+    }
+
+    class StartWingConsoleAction(project: Project): AnAction(AllIcons.Actions.StopRefresh) {
+        private val consoleManager = project.service<WingConsoleManager>()
+        override fun actionPerformed(event: AnActionEvent) {
+            ApplicationManager.getApplication().executeOnPooledThread {
+                runBlocking {
+                    consoleManager.startForPath(consoleManager.path ?: "")
+                }
+            }
         }
     }
 }
