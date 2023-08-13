@@ -3,6 +3,14 @@
 # Wing-Idea Changelog
 
 ## [Unreleased]
+### Fixed
+- Fixed structs not working
+- Updated deprecated methods in LSP API
+
+### Added
+- Added support for Stopping and starting the Wing Console
+
+## [0.1.0] - 2023-08-13
 
 ### Added
 - Added folding support for blocks
@@ -32,6 +40,7 @@
 ### Added
 - Initial scaffold created from [IntelliJ Platform Plugin Template](https://github.com/JetBrains/intellij-platform-plugin-template)
 
-[Unreleased]: https://github.com/olivernybroe/Wing-Idea/compare/v0.0.2...HEAD
+[Unreleased]: https://github.com/olivernybroe/Wing-Idea/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/olivernybroe/Wing-Idea/compare/v0.0.2...v0.1.0
 [0.0.2]: https://github.com/olivernybroe/Wing-Idea/compare/v0.0.1...v0.0.2
 [0.0.1]: https://github.com/olivernybroe/Wing-Idea/commits/v0.0.1
