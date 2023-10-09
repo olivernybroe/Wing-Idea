@@ -45,16 +45,15 @@ public class WingParser implements PsiParser, LightPsiParser {
   };
 
   /* ********************************************************** */
-  // 'public'
-  //     | 'private'
-  //     | 'protected'
+  // PUBLIC
+  //     | PROTECTED
   public static boolean AccessModifier(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "AccessModifier")) return false;
+    if (!nextTokenIs(b, "<access modifier>", PROTECTED, PUBLIC)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, ACCESS_MODIFIER, "<access modifier>");
-    r = consumeToken(b, "public");
-    if (!r) r = consumeToken(b, "private");
-    if (!r) r = consumeToken(b, "protected");
+    r = consumeToken(b, PUBLIC);
+    if (!r) r = consumeToken(b, PROTECTED);
     exit_section_(b, l, m, r, false, null);
     return r;
   }

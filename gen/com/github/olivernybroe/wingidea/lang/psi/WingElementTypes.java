@@ -148,6 +148,8 @@ public interface WingElementTypes {
   IElementType NOT_EQUAL = new WingTokenType("!=");
   IElementType OR = new WingTokenType("||");
   IElementType POWER = new WingTokenType("**");
+  IElementType PROTECTED = new WingTokenType("protected");
+  IElementType PUBLIC = new WingTokenType("pub");
   IElementType QUESTION_MARK = new WingTokenType("?");
   IElementType RETURN = new WingTokenType("return");
   IElementType RIGHT_CURLY_BRACE = new WingTokenType("}");

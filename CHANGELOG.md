@@ -6,6 +6,10 @@
 ### Fixed
 - Fixed structs not working
 - Updated deprecated methods in LSP API
+- Fixed pub and protected accessor support
+
+### Changed
+- Changed color scheme for editor
 
 ### Added
 - Added support for Stopping and starting the Wing Console

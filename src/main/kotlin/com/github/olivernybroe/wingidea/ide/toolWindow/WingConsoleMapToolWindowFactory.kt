@@ -7,6 +7,7 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.content.ContentFactory
 import com.github.olivernybroe.wingidea.ide.services.WingConsoleManager
 import com.intellij.icons.AllIcons
+import com.intellij.openapi.actionSystem.ActionUpdateThread
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.application.ApplicationManager
@@ -42,7 +43,7 @@ class WingConsoleMapToolWindowFactory : ToolWindowFactory {
 
         fun getContent() = browser.component
 
-        private fun createUrl() = "${consoleManager.host}:${consoleManager.port}?layout=$WING_CONSOLE_IDE_LAYOUT"
+        private fun createUrl() = "${consoleManager.host}:${consoleManager.port}?layout=$WING_CONSOLE_IDE_LAYOUT&color=3C3F41"
 
         override fun onConnectionChanged() {
             browser.loadURL(createUrl())
@@ -56,14 +57,19 @@ class WingConsoleMapToolWindowFactory : ToolWindowFactory {
         }
     }
 
-    class StopWingConsoleAction(project: Project): AnAction(AllIcons.Actions.Run_anything) {
+    class StopWingConsoleAction(project: Project): AnAction(AllIcons.Process.Stop) {
         private val consoleManager = project.service<WingConsoleManager>()
         override fun actionPerformed(event: AnActionEvent) {
             consoleManager.stop()
         }
+
+        override fun update(e: AnActionEvent) {
+        }
+
+        override fun getActionUpdateThread(): ActionUpdateThread = ActionUpdateThread.BGT
     }
 
-    class StartWingConsoleAction(project: Project): AnAction(AllIcons.Actions.StopRefresh) {
+    class StartWingConsoleAction(project: Project): AnAction(AllIcons.Toolwindows.ToolWindowRun) {
         private val consoleManager = project.service<WingConsoleManager>()
         override fun actionPerformed(event: AnActionEvent) {
             ApplicationManager.getApplication().executeOnPooledThread {

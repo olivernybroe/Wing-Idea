@@ -9,7 +9,7 @@
   //noinspection BnfResolve
   extends='com.github.olivernybroe.wingidea.lang.psi.impl.WingElementImpl'
 
-//noinspection BnfResolve
+  //noinspection BnfResolve
   elementTypeHolderClass='com.github.olivernybroe.wingidea.lang.psi.WingElementTypes'
   //noinspection BnfResolve
   elementTypeClass='com.github.olivernybroe.wingidea.lang.psi.WingElementType'
@@ -91,6 +91,8 @@
     EXTERN = 'extern'
     AWAIT = 'await'
     DEFER = 'defer'
+    PUBLIC = 'pub'
+    PROTECTED = 'protected'
     MULTI_LINE_COMMENT = 'regexp:/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+/'
     STRING_LITERAL  = 'regexp:\"([^\\\"\r\n]|\\[^\r\n])*\"?'
     IDENTIFIER = 'regexp:[A-Za-z_$][A-Za-z_$0-9]*|[A-Z][A-Z0-9_]*'
@@ -330,9 +332,8 @@ ClassField ::=
     AccessModifier? 'static'? INFLIGHT_SPECIFIER? VAR? IDENTIFIER TypeAnnotation (ASSIGNMENT Expression)? SEMICOLON
 
 AccessModifier ::=
-    'public'
-    | 'private'
-    | 'protected'
+    PUBLIC
+    | PROTECTED
 
 VariableAssignmentStatement ::=
     ReferenceExpression ASSIGNMENT Expression SEMICOLON
