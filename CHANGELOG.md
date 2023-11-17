@@ -7,6 +7,7 @@
 - Fixed structs not working
 - Updated deprecated methods in LSP API
 - Fixed pub and protected accessor support
+- Fixed init keyword replaced with new
 
 ### Changed
 - Changed color scheme for editor

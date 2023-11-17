@@ -1141,14 +1141,14 @@ public class WingParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // INFLIGHT_SPECIFIER? INIT ParameterList BlockStatement
+  // INFLIGHT_SPECIFIER? NEW ParameterList BlockStatement
   public static boolean Initializer(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "Initializer")) return false;
-    if (!nextTokenIs(b, "<initializer>", INFLIGHT_SPECIFIER, INIT)) return false;
+    if (!nextTokenIs(b, "<initializer>", INFLIGHT_SPECIFIER, NEW)) return false;
     boolean r;
     Marker m = enter_section_(b, l, _NONE_, INITIALIZER, "<initializer>");
     r = Initializer_0(b, l + 1);
-    r = r && consumeToken(b, INIT);
+    r = r && consumeToken(b, NEW);
     r = r && ParameterList(b, l + 1);
     r = r && BlockStatement(b, l + 1);
     exit_section_(b, l, m, r, false, null);

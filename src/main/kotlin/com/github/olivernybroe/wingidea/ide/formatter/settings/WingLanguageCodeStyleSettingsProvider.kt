@@ -17,7 +17,7 @@ class WingLanguageCodeStyleSettingsProvider: LanguageCodeStyleSettingsProvider()
               var field2: num; // <-- reassignable
               inflight field3: Array<str>;
 
-              init() {
+              new() {
                 this.field1 = "hello";
                 this.field2 = 123;
               }
@@ -26,7 +26,7 @@ class WingLanguageCodeStyleSettingsProvider: LanguageCodeStyleSettingsProvider()
                 this.field2 = value;
               }
 
-              inflight init() {
+              inflight new() {
                 this.field3 = ["value created on inflight init"];
                 log("at inflight init");
               }

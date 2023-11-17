@@ -87,7 +87,6 @@
     SUPER = 'super'
     QUESTION_MARK = '?'
     COMMENT = 'regexp://.*'
-    INIT = 'init'
     EXTERN = 'extern'
     AWAIT = 'await'
     DEFER = 'defer'
@@ -311,7 +310,7 @@ ClassImplementation ::=
     LEFT_CURLY_BRACE (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* RIGHT_CURLY_BRACE
 
 Initializer ::=
-    INFLIGHT_SPECIFIER? INIT ParameterList BlockStatement
+    INFLIGHT_SPECIFIER? NEW ParameterList BlockStatement
 
 ParameterList ::=
     LEFT_PARENTHESIS [ParameterDefinition (COMMA ParameterDefinition)* COMMA?] RIGHT_PARENTHESIS

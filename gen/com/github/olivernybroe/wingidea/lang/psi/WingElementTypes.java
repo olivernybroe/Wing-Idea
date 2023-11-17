@@ -129,7 +129,6 @@ public interface WingElementTypes {
   IElementType IMPLEMENTS = new WingTokenType("impl");
   IElementType IN = new WingTokenType("in");
   IElementType INFLIGHT_SPECIFIER = new WingTokenType("inflight");
-  IElementType INIT = new WingTokenType("init");
   IElementType INTEGER = new WingTokenType("INTEGER");
   IElementType INTERFACE = new WingTokenType("interface");
   IElementType LEFT_CURLY_BRACE = new WingTokenType("{");
