@@ -45,9 +45,9 @@ public class WingInflightMethodDefinitionImpl extends WingElementImpl implements
   }
 
   @Override
-  @NotNull
+  @Nullable
   public WingParameterList getParameterList() {
-    return findNotNullChildByClass(WingParameterList.class);
+    return findChildByClass(WingParameterList.class);
   }
 
   @Override
@@ -57,9 +57,9 @@ public class WingInflightMethodDefinitionImpl extends WingElementImpl implements
   }
 
   @Override
-  @NotNull
+  @Nullable
   public PsiElement getIdentifier() {
-    return findNotNullChildByType(IDENTIFIER);
+    return findChildByType(IDENTIFIER);
   }
 
 }

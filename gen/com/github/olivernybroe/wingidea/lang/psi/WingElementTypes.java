@@ -78,7 +78,6 @@ public interface WingElementTypes {
   IElementType STRUCTURED_ACCESS_EXPRESSION = new WingElementType("STRUCTURED_ACCESS_EXPRESSION");
   IElementType STRUCT_DEFINITION_STATEMENT = new WingElementType("STRUCT_DEFINITION_STATEMENT");
   IElementType STRUCT_FIELD = new WingElementType("STRUCT_FIELD");
-  IElementType STRUCT_IMPLEMENTATION = new WingElementType("STRUCT_IMPLEMENTATION");
   IElementType STRUCT_LITERAL_EXPRESSION = new WingElementType("STRUCT_LITERAL_EXPRESSION");
   IElementType STRUCT_LITERAL_MEMBER = new WingElementType("STRUCT_LITERAL_MEMBER");
   IElementType SUPER_CALL_EXPRESSION = new WingElementType("SUPER_CALL_EXPRESSION");
@@ -372,9 +371,6 @@ public interface WingElementTypes {
       }
       else if (type == STRUCT_FIELD) {
         return new WingStructFieldImpl(node);
-      }
-      else if (type == STRUCT_IMPLEMENTATION) {
-        return new WingStructImplementationImpl(node);
       }
       else if (type == STRUCT_LITERAL_EXPRESSION) {
         return new WingStructLiteralExpressionImpl(node);

@@ -9,6 +9,9 @@
 - Fixed pub and protected accessor support
 - Fixed init keyword replaced with new
 
+### Added
+- Better recovery of syntax errors
+
 ### Changed
 - Changed color scheme for editor
 

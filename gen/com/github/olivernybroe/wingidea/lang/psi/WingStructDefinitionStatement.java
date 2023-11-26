@@ -8,6 +8,6 @@ import com.intellij.psi.PsiElement;
 public interface WingStructDefinitionStatement extends WingElement {
 
   @NotNull
-  WingStructImplementation getStructImplementation();
+  List<WingStructField> getStructFieldList();
 
 }

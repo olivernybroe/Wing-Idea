@@ -7,7 +7,7 @@ import com.intellij.psi.PsiElement;
 
 public interface WingResourceDefinitionStatement extends WingElement {
 
-  @NotNull
+  @Nullable
   WingResourceImplementation getResourceImplementation();
 
 }

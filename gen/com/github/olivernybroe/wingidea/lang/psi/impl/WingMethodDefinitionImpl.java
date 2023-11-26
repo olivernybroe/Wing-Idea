@@ -45,9 +45,9 @@ public class WingMethodDefinitionImpl extends WingElementImpl implements WingMet
   }
 
   @Override
-  @NotNull
+  @Nullable
   public WingParameterList getParameterList() {
-    return findNotNullChildByClass(WingParameterList.class);
+    return findChildByClass(WingParameterList.class);
   }
 
   @Override

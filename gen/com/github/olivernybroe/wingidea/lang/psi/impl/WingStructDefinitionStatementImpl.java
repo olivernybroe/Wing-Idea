@@ -28,8 +28,8 @@ public class WingStructDefinitionStatementImpl extends WingElementImpl implement
 
   @Override
   @NotNull
-  public WingStructImplementation getStructImplementation() {
-    return findNotNullChildByClass(WingStructImplementation.class);
+  public List<WingStructField> getStructFieldList() {
+    return PsiTreeUtil.getChildrenOfTypeAsList(this, WingStructField.class);
   }
 
 }

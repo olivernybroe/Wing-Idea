@@ -16,13 +16,13 @@ public interface WingInflightMethodDefinition extends WingElement {
   @Nullable
   WingExternModifier getExternModifier();
 
-  @NotNull
+  @Nullable
   WingParameterList getParameterList();
 
   @Nullable
   WingTypeAnnotation getTypeAnnotation();
 
-  @NotNull
+  @Nullable
   PsiElement getIdentifier();
 
 }

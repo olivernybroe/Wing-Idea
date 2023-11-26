@@ -27,9 +27,9 @@ public class WingClassDefinitionStatementImpl extends WingElementImpl implements
   }
 
   @Override
-  @NotNull
+  @Nullable
   public WingClassImplementation getClassImplementation() {
-    return findNotNullChildByClass(WingClassImplementation.class);
+    return findChildByClass(WingClassImplementation.class);
   }
 
 }

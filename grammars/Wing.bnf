@@ -129,7 +129,7 @@ ImportStatementBlock ::=
 
 ImportStatement ::=
     BRING IDENTIFIER SEMICOLON
-    | BRING IDENTIFIER ALIAS IDENTIFIER SEMICOLON
+    | BRING IDENTIFIER ALIAS IDENTIFIER SEMICOLON {pin=1}
 
 TestStatement ::=
     TEST String BlockStatement
@@ -138,7 +138,7 @@ BlockStatement ::=
     LEFT_CURLY_BRACE Statement* RIGHT_CURLY_BRACE
 
 ExpressionStatement ::=
-    Expression SEMICOLON
+    Expression SEMICOLON {pin=1}
 
 Expression ::=
     BinaryExpression
@@ -304,10 +304,10 @@ WhileStatement ::=
     WHILE Expression BlockStatement
 
 ClassDefinitionStatement ::=
-    INFLIGHT_SPECIFIER CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (COMMA CustomType)*)? ClassImplementation
+    INFLIGHT_SPECIFIER CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (COMMA CustomType)*)? ClassImplementation {pin=1}
 
 ClassImplementation ::=
-    LEFT_CURLY_BRACE (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* RIGHT_CURLY_BRACE
+    LEFT_CURLY_BRACE (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* RIGHT_CURLY_BRACE {pin=1}
 
 Initializer ::=
     INFLIGHT_SPECIFIER? NEW ParameterList BlockStatement
@@ -319,10 +319,10 @@ ParameterDefinition ::=
     VAR? IDENTIFIER TypeAnnotation
 
 MethodDefinition ::=
-    ExternModifier? AccessModifier? static? 'async'? IDENTIFIER ParameterList TypeAnnotation? (BlockStatement | SEMICOLON)
+    ExternModifier? AccessModifier? static? 'async'? IDENTIFIER ParameterList TypeAnnotation? (BlockStatement | SEMICOLON) {pin=5}
 
 InflightMethodDefinition ::=
-    ExternModifier? AccessModifier? static? INFLIGHT_SPECIFIER IDENTIFIER ParameterList TypeAnnotation? (BlockStatement | SEMICOLON)
+    ExternModifier? AccessModifier? static? INFLIGHT_SPECIFIER IDENTIFIER ParameterList TypeAnnotation? (BlockStatement | SEMICOLON) {pin=4}
 
 ExternModifier ::=
     EXTERN String
@@ -358,19 +358,19 @@ Accessor ::=
     | '?.'
 
 ResourceDefinitionStatement ::=
-    CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (COMMA CustomType)*)?  ResourceImplementation
+    CLASS IDENTIFIER (EXTENDS CustomType)? (IMPLEMENTS CustomType (COMMA CustomType)*)?  ResourceImplementation {pin=1}
 
 ResourceImplementation ::=
-    LEFT_CURLY_BRACE (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* RIGHT_CURLY_BRACE
+    LEFT_CURLY_BRACE (Initializer | ClassField | MethodDefinition | InflightMethodDefinition )* RIGHT_CURLY_BRACE {pin=1}
 
 ReturnStatement ::=
     RETURN Expression SEMICOLON
 
 InterfaceDefinitionStatement ::=
-    INTERFACE IDENTIFIER (EXTENDS CustomType (COMMA CustomType)*)? InterfaceImplementation
+    INTERFACE IDENTIFIER (EXTENDS CustomType (COMMA CustomType)*)? InterfaceImplementation {pin=1}
 
 InterfaceImplementation ::=
-    LEFT_CURLY_BRACE (MethodSignature | InflightMethodSignature | ClassField )* RIGHT_CURLY_BRACE
+    LEFT_CURLY_BRACE (MethodSignature | InflightMethodSignature | ClassField )* RIGHT_CURLY_BRACE {pin=1}
 
 MethodSignature ::=
     ASYNC? IDENTIFIER ParameterList TypeAnnotation SEMICOLON
@@ -379,13 +379,13 @@ InflightMethodSignature ::=
     INFLIGHT_SPECIFIER IDENTIFIER ParameterList TypeAnnotation SEMICOLON
 
 StructDefinitionStatement ::=
-    STRUCT IDENTIFIER (EXTENDS CustomType (COMMA CustomType)*)? StructImplementation
+    STRUCT IDENTIFIER (EXTENDS CustomType (COMMA CustomType)*)? StructImplementation {pin=1}
 
-StructImplementation ::=
-    LEFT_CURLY_BRACE StructField* RIGHT_CURLY_BRACE
+private StructImplementation ::=
+    LEFT_CURLY_BRACE StructField* RIGHT_CURLY_BRACE {pin=1}
 
 StructField ::=
-    IDENTIFIER TypeAnnotation SEMICOLON
+    IDENTIFIER TypeAnnotation SEMICOLON {pin=1}
 
 StructLiteralExpression ::=
     CustomType LEFT_CURLY_BRACE StructLiteralMember* (COMMA StructLiteralMember)* COMMA? RIGHT_CURLY_BRACE

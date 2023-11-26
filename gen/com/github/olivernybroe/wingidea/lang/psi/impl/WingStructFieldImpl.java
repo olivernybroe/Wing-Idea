@@ -27,9 +27,9 @@ public class WingStructFieldImpl extends WingElementImpl implements WingStructFi
   }
 
   @Override
-  @NotNull
+  @Nullable
   public WingTypeAnnotation getTypeAnnotation() {
-    return findNotNullChildByClass(WingTypeAnnotation.class);
+    return findChildByClass(WingTypeAnnotation.class);
   }
 
   @Override

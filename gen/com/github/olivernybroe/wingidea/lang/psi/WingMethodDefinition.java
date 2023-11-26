@@ -16,7 +16,7 @@ public interface WingMethodDefinition extends WingElement {
   @Nullable
   WingExternModifier getExternModifier();
 
-  @NotNull
+  @Nullable
   WingParameterList getParameterList();
 
   @Nullable

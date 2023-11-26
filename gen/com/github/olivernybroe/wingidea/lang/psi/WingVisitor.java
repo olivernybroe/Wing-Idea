@@ -282,10 +282,6 @@ public class WingVisitor extends PsiElementVisitor {
     visitElement(o);
   }
 
-  public void visitStructImplementation(@NotNull WingStructImplementation o) {
-    visitElement(o);
-  }
-
   public void visitStructLiteralExpression(@NotNull WingStructLiteralExpression o) {
     visitExpression(o);
   }
