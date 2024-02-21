@@ -36,7 +36,7 @@ private class WingLspServerDescriptor(project: Project) : ProjectWideLspServerDe
                 return super.getIcon(item) ?: WingIcons.FILE
             }
 
-            override fun createLookupElement(parameters: CompletionParameters, item: CompletionItem): LookupElement? {
+            override fun createLookupElement(parameters: CompletionParameters, item: CompletionItem): LookupElement {
                 val lookupElement = super.createLookupElement(parameters, item) as LookupElementBuilder
 
                 val insertText = item.insertText
