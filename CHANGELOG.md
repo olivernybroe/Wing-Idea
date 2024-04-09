@@ -4,8 +4,6 @@
 
 ## [Unreleased]
 
-## [0.1.6] - 2024-04-07
-
 ### Fixed
 
 - Support IntelliJ 2024.1, EAP
